@@ -8,6 +8,7 @@ class AppColors {
   static const Color deepPurple = Color(0xFF673AB7);
   static const Color infoBlue = Color(0xFF2196F3);
   static const Color infoGreen = Color(0xFF4CAF50);
+  static const Color greenColor = Color(0xFF4CAF50);
   static const Color infoOrange = Color(0xFFFF9800);
   static const Color cardBlue = Color(0xFF4a90e2);
   static const Color whiteColor = Color(0xFFFFFFFF);

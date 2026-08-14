@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:scanner_pdf_docs/utils/app_colors.dart';
+import 'package:scanner_pdf_docs/utils/app_texts.dart';
 
 class AppConstants {
   static final ImagePicker _imagePicker = ImagePicker();
@@ -80,6 +82,16 @@ class AppConstants {
     } catch (e) {
       debugPrint('AppConstants.pickImages error: $e');
       showCommonSnackBar(message: 'Failed to pick images', isError: true);
+    }
+  }
+
+  static Future<void> copyToClipboard(String text) async {
+    try {
+      await Clipboard.setData(ClipboardData(text: text));
+      showCommonSnackBar(message: AppTexts.copiedToClipboard);
+    } catch (e) {
+      debugPrint('AppConstants.copyToClipboard error: $e');
+      showCommonSnackBar(message: AppTexts.failedToCopy, isError: true);
     }
   }
 

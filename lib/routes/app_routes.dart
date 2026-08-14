@@ -8,4 +8,5 @@ class AppRoutes {
   static const documentEditor = '/document-editor';
   static const imageEditor = '/image-editor';
   static const previewShare = '/preview-share';
+  static const qrScanner = '/qr-scanner';
 }

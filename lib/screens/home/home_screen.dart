@@ -120,7 +120,9 @@ class HomeTab extends GetView<ScanController> {
                   icon: Icons.qr_code_scanner,
                   label: 'Scan\nQR Code',
                   color: AppColors.infoBlue,
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed(AppRoutes.qrScanner);
+                  },
                 ),
                 FeatureCardWidget(
                   icon: Icons.photo_library,

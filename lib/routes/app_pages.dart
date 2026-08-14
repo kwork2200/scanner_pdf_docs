@@ -14,6 +14,8 @@ import 'package:scanner_pdf_docs/screens/editor/camera_scan_screen.dart';
 import 'package:scanner_pdf_docs/screens/editor/image_editor_screen.dart';
 import 'package:scanner_pdf_docs/screens/editor/document_editor_screen.dart';
 import 'package:scanner_pdf_docs/screens/editor/preview_share_screen.dart';
+import 'package:scanner_pdf_docs/screens/qr_scanner/qr_scanner_screen.dart';
+import 'package:scanner_pdf_docs/screens/qr_scanner/qr_scanner_binding.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -61,6 +63,11 @@ class AppPages {
       name: AppRoutes.previewShare,
       page: () => const PreviewShareScreen(),
       binding: EditorBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.qrScanner,
+      page: () => const QrScannerScreen(),
+      binding: QrScannerBinding(),
     ),
   ];
 }

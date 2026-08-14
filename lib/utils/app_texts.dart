@@ -218,4 +218,14 @@ class AppTexts {
   static String get next => 'Next';
   static String get previous => 'Previous';
   static String get finish => 'Finish';
+  
+  // QR Scanner
+  static String get scanQrCode => 'Scan QR Code';
+  static String get positionQrCode => 'Position QR code within frame';
+  static String get open => 'Open';
+  static String get copiedToClipboard => 'Copied to clipboard';
+  static String get notValidUrl => 'Not a valid URL';
+  static String get cannotOpenLink => 'Cannot open this link';
+  static String get invalidUrl => 'Invalid URL';
+  static String get failedToCopy => 'Failed to copy';
 }
