@@ -228,4 +228,11 @@ class AppTexts {
   static String get cannotOpenLink => 'Cannot open this link';
   static String get invalidUrl => 'Invalid URL';
   static String get failedToCopy => 'Failed to copy';
+  
+  static String get scanIdCard => 'Scan ID Card';
+  static String get positionIdCard => 'Position ID card within the frame';
+  static String get idCardDetected => 'ID Card Detected!';
+  static String get autoCaptureOn => 'Auto Capture: ON';
+  static String get autoCaptureOff => 'Auto Capture: OFF';
+  static String get idCardCaptured => 'ID Card captured successfully!';
 }

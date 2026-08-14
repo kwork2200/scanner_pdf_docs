@@ -16,6 +16,8 @@ import 'package:scanner_pdf_docs/screens/editor/document_editor_screen.dart';
 import 'package:scanner_pdf_docs/screens/editor/preview_share_screen.dart';
 import 'package:scanner_pdf_docs/screens/qr_scanner/qr_scanner_screen.dart';
 import 'package:scanner_pdf_docs/screens/qr_scanner/qr_scanner_binding.dart';
+import 'package:scanner_pdf_docs/screens/id_card_scanner/id_card_scanner_screen.dart';
+import 'package:scanner_pdf_docs/screens/id_card_scanner/id_card_scanner_binding.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -68,6 +70,11 @@ class AppPages {
       name: AppRoutes.qrScanner,
       page: () => const QrScannerScreen(),
       binding: QrScannerBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.idCardScanner,
+      page: () => const IdCardScannerScreen(),
+      binding: IdCardScannerBinding(),
     ),
   ];
 }

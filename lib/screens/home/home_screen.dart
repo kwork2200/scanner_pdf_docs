@@ -114,7 +114,9 @@ class HomeTab extends GetView<ScanController> {
                   icon: Icons.credit_card,
                   label: 'ID Cards',
                   color: AppColors.infoBlue,
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed(AppRoutes.idCardScanner);
+                  },
                 ),
                 FeatureCardWidget(
                   icon: Icons.qr_code_scanner,
