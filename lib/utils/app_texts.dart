@@ -2,6 +2,7 @@ class AppTexts {
   // App Basics
   static String get appTitle => 'Scanner PDF Docs';
   static String get splashTitle => 'Document Scanner';
+  static String get scannerApp => 'Scanner App';
   static String get splashSubtitle => 'Scan, Save & Share Documents';
   static String get appVersion => 'Version 1.0.0';
   
@@ -31,12 +32,16 @@ class AppTexts {
   static String get navHome => 'Home';
   static String get navDocuments => 'Documents';
   static String get navScanner => 'Scanner';
+  static String get scan => 'Scan';
   static String get navSettings => 'Settings';
   
   // Scanner
   static String get scanDocument => 'Scan Document';
   static String get takePhoto => 'Take Photo';
+  static String get scanWithCamera => 'Scan With Camera';
   static String get chooseFromGallery => 'Choose from Gallery';
+  static String get scanFromPhotos => 'Scan from Photos';
+  static String get scanFromFiles => 'Scan from Files';
   static String get cropImage => 'Crop Image';
   static String get rotateImage => 'Rotate Image';
   static String get adjustBorders => 'Adjust Borders';
@@ -55,6 +60,7 @@ class AppTexts {
   
   // Documents
   static String get documents => 'Documents';
+  static String get files => 'Files';
   static String get myDocuments => 'My Documents';
   static String get recentDocuments => 'Recent';
   static String get allDocuments => 'All Documents';

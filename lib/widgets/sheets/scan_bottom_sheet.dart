@@ -23,47 +23,42 @@ class ScanBottomSheet extends StatelessWidget {
     
     return SafeArea(
       child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration: BoxDecoration(
+          color: AppColors.backgroundColor,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
+            topLeft: Radius.circular(AppDimensions.radiusLarge),
+            topRight: Radius.circular(AppDimensions.radiusLarge),
           ),
         ),
         padding: EdgeInsets.only(
-          left: 24,
-          right: 24,
-          top: 24,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+          left: AppDimensions.paddingLarge,
+          right: AppDimensions.paddingLarge,
+          top: AppDimensions.paddingLarge,
+          bottom: MediaQuery.of(context).viewInsets.bottom + AppDimensions.paddingLarge,
         ),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Title
               CommonText(
-                text: AppTexts.scanDocument,
-                fontSize: AppFontSizes.font22,
+                text: AppTexts.scan,
+                fontSize: AppFontSizes.font16,
                 fontWeight: AppFontWeights.bold,
+                color: AppColors.blackColor,
               ),
-              
-              Spacing.height(AppDimensions.paddingLarge),
-              
-              // Options
+              Spacing.height(AppDimensions.paddingSmall),
               _buildOption(
                 icon: Icons.camera_alt,
-                title: AppTexts.takePhoto,
+                title: AppTexts.scanWithCamera,
                 onTap: () {
                   Get.back();
                   Get.toNamed(AppRoutes.cameraScan);
                 },
               ),
-              
-              Spacing.height(AppDimensions.spacingXLarge),
-              
               _buildOption(
                 icon: Icons.photo,
-                title: AppTexts.importFromGallery,
+                title: AppTexts.scanFromPhotos,
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
@@ -71,7 +66,6 @@ class ScanBottomSheet extends StatelessWidget {
                   
                   if (image != null) {
                     await scanController.processPickedImage(image.path);
-                    // Navigate to image editor
                     if (scanController.currentImage.value != null) {
                       Get.toNamed(AppRoutes.imageEditor, arguments: {
                         'imageFile': scanController.currentImage.value!,
@@ -80,12 +74,9 @@ class ScanBottomSheet extends StatelessWidget {
                   }
                 },
               ),
-              
-              Spacing.height(AppDimensions.spacingXLarge),
-              
               _buildOption(
                 icon: Icons.folder,
-                title: AppTexts.importFromFiles,
+                title: AppTexts.scanFromFiles,
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
@@ -102,25 +93,16 @@ class ScanBottomSheet extends StatelessWidget {
                   }
                 },
               ),
-              
-              Spacing.height(AppDimensions.paddingLarge),
-              
-              // Cancel Button
+              Spacing.height(AppDimensions.paddingSmall),
               SizedBox(
                 width: double.infinity,
-                child: OutlinedButton(
+                child: TextButton(
                   onPressed: () => Get.back(),
-                  style: OutlinedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: AppDimensions.paddingXMedium),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
-                    ),
-                    side: const BorderSide(color: AppColors.grey400),
-                  ),
                   child: CommonText(
                     text: AppTexts.cancel,
-                    fontSize: AppFontSizes.font16,
+                    fontSize: AppFontSizes.font14,
                     color: AppColors.black87,
+                    fontWeight: AppFontWeights.semiBold,
                   ),
                 ),
               ),
@@ -139,29 +121,24 @@ class ScanBottomSheet extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.grey[100],
-          borderRadius: BorderRadius.circular(12),
-        ),
+        padding: EdgeInsets.symmetric(vertical:AppDimensions.paddingSmall),
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(AppDimensions.paddingSmall - 3),
               decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(12),
+                color: AppColors.infoBlue,
+                borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
               ),
-              child: Icon(icon, color: Colors.white, size: 28),
+              child: Icon(icon, color: AppColors.backgroundColor, size: AppDimensions.iconMedium),
             ),
-            const SizedBox(width: 16),
+            Spacing.width(AppDimensions.paddingSmall),
             Expanded(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
+              child: CommonText(
+                text: title,
+                fontSize: AppFontSizes.font14,
+                fontWeight: AppFontWeights.semiBold,
+                color: AppColors.blackColor,
               ),
             ),
           ],

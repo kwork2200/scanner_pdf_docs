@@ -18,6 +18,10 @@ import 'package:scanner_pdf_docs/screens/qr_scanner/qr_scanner_screen.dart';
 import 'package:scanner_pdf_docs/screens/qr_scanner/qr_scanner_binding.dart';
 import 'package:scanner_pdf_docs/screens/id_card_scanner/id_card_scanner_screen.dart';
 import 'package:scanner_pdf_docs/screens/id_card_scanner/id_card_scanner_binding.dart';
+import 'package:scanner_pdf_docs/screens/count_objects/count_objects_screen.dart';
+import 'package:scanner_pdf_docs/screens/count_objects/count_objects_binding.dart';
+import 'package:scanner_pdf_docs/screens/signature/signature_screen.dart';
+import 'package:scanner_pdf_docs/screens/signature/signature_binding.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -75,6 +79,16 @@ class AppPages {
       name: AppRoutes.idCardScanner,
       page: () => const IdCardScannerScreen(),
       binding: IdCardScannerBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.countObjects,
+      page: () => const CountObjectsScreen(),
+      binding: CountObjectsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.signature,
+      page: () => const SignatureScreen(),
+      binding: SignatureBinding(),
     ),
   ];
 }

@@ -13,6 +13,7 @@ import 'package:scanner_pdf_docs/utils/app_dimensions.dart';
 import 'package:scanner_pdf_docs/utils/app_font_sizes.dart';
 import 'package:scanner_pdf_docs/utils/app_font_weights.dart';
 import 'package:scanner_pdf_docs/utils/app_constants.dart';
+import 'package:scanner_pdf_docs/widgets/common/common_app_bar.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text_field.dart';
 
@@ -23,44 +24,8 @@ class HomeTab extends GetView<ScanController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.infoBlue.withValues(alpha: 0.01),
-      appBar: AppBar(
-        backgroundColor: AppColors.backgroundColor,
-        foregroundColor: AppColors.backgroundColor,
-        title: Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(5.w),
-              decoration: BoxDecoration(
-                color: AppColors.infoBlue,
-                borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
-              ),
-              child: Center(
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.star,
-                      color: AppColors.backgroundColor,
-                      size: 12.sp,
-                    ),
-                    CommonText(
-                      text: ' PRO',
-                      fontSize: AppFontSizes.fontNeNoSmall,
-                      fontWeight: AppFontWeights.medium,
-                      color: AppColors.backgroundColor,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Spacing.width(30),
-            CommonText(
-              text: AppTexts.appTitle,
-              fontSize: AppFontSizes.font16,
-              fontWeight: AppFontWeights.semiBold,
-              color: AppColors.blackColor,
-            ),
-          ],
-        ),
+      appBar: CommonAppBar(
+        title: AppTexts.appTitle,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -145,7 +110,9 @@ class HomeTab extends GetView<ScanController> {
                   icon: Icons.draw,
                   label: 'Signature',
                   color: AppColors.infoBlue,
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed(AppRoutes.signature);
+                  },
                 ),
                 FeatureCardWidget(
                   icon: Icons.folder_open,
@@ -167,7 +134,9 @@ class HomeTab extends GetView<ScanController> {
                   icon: Icons.calculate,
                   label: 'Count\nObjects',
                   color: AppColors.infoBlue,
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed(AppRoutes.countObjects);
+                  },
                 ),
               ],
             ),

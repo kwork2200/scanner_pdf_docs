@@ -52,6 +52,7 @@ dependencies:
   # ML Kit for Document Detection
   google_mlkit_text_recognition: ^0.15.0
   google_mlkit_face_detection: ^0.13.1
+  google_mlkit_object_detection: ^0.15.0
 
   # Image Cropping
   image_cropper: ^8.0.0

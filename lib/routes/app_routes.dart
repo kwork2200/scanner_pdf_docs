@@ -10,4 +10,6 @@ class AppRoutes {
   static const previewShare = '/preview-share';
   static const qrScanner = '/qr-scanner';
   static const idCardScanner = '/id-card-scanner';
+  static const countObjects = '/count-objects';
+  static const signature = '/signature';
 }

@@ -11,6 +11,7 @@ import 'package:scanner_pdf_docs/utils/app_dimensions.dart';
 import 'package:scanner_pdf_docs/utils/app_font_sizes.dart';
 import 'package:scanner_pdf_docs/utils/app_font_weights.dart';
 import 'package:scanner_pdf_docs/utils/app_constants.dart';
+import 'package:scanner_pdf_docs/widgets/common/common_app_bar.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text.dart';
 
 class FilesTab extends GetView<ScanController> {
@@ -19,111 +20,116 @@ class FilesTab extends GetView<ScanController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: CommonText(
-          text: AppTexts.documents,
-          fontSize: AppFontSizes.font18,
-          fontWeight: AppFontWeights.bold,
-          color: AppColors.whiteColor,
-        ),
-        backgroundColor: AppColors.infoBlue,
-        foregroundColor: AppColors.whiteColor,
-      ),
+      appBar: CommonAppBar(title: AppTexts.scannerApp),
       body: Obx(() {
         if (controller.capturedImages.isEmpty) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                 Icon(
+                Icon(
                   Icons.folder_open,
-                  size: AppDimensions.iconXXLarge,
+                  size: AppDimensions.iconXLarge,
                   color: AppColors.grey400,
                 ),
-                 SizedBox(height: AppDimensions.spacingXLarge),
+                Spacing.height(AppDimensions.spacingSmall),
                 CommonText(
                   text: AppTexts.noDocumentsFound,
-                  fontSize: AppFontSizes.fontLarge,
-                  color: AppColors.grey400,
+                  fontSize: AppFontSizes.font16,
+                  color: AppColors.grey600,
                 ),
               ],
             ),
           );
         }
-        
-        return ListView.builder(
-          padding: EdgeInsets.all(AppDimensions.paddingMedium),
+
+        return GridView.builder(
+          padding: EdgeInsets.all(AppDimensions.paddingSmall),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 4,
+            mainAxisSpacing: 10,
+            childAspectRatio: 0.8,
+          ),
           itemCount: controller.capturedImages.length,
           itemBuilder: (context, index) {
             final image = controller.capturedImages[index];
             final fileSize = _getFileSize(image);
             final fileName = 'Document ${index + 1}';
-            
+
             return InkWell(
+              onTap: () {
+                controller.currentImage.value = image;
+                Get.toNamed(AppRoutes.documentEditor);
+              },
               onLongPress: () {
                 _showContextMenu(context, image, fileName, index);
               },
               child: Card(
-                margin: EdgeInsets.only(bottom: AppDimensions.spacingLarge),
-                child: ListTile(
-                  leading: Container(
-                    width: AppDimensions.paddingXLarge40,
-                    height: AppDimensions.paddingXLarge40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
-                      color: AppColors.grey300,
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
-                      child: Image.file(
-                        image,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(Icons.image, color: AppColors.grey400);
-                        },
-                      ),
-                    ),
+                elevation: 2,
+                color: AppColors.backgroundColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    AppDimensions.radiusSmall,
                   ),
-                  title: Text(fileName),
-                  subtitle: Text('06.08.2026 • $fileSize'),
-                  trailing: PopupMenuButton<String>(
-                    icon: const Icon(Icons.more_vert),
-                    onSelected: (value) {
-                      if (value == 'view') {
-                        controller.currentImage.value = image;
-                        Get.toNamed(AppRoutes.documentEditor);
-                      } else if (value == 'delete') {
-                        controller.deleteImage(index);
-                        Get.snackbar('Deleted', '$fileName deleted successfully');
-                      }
-                    },
-                    itemBuilder: (BuildContext context) => [
-                      PopupMenuItem(
-                        value: 'view',
-                        child: Row(
-                          children: [
-                             Icon(Icons.visibility, size: AppDimensions.iconSmall),
-                            Spacing.width(AppDimensions.spacingMedium),
-                            CommonText(text: 'View'),
-                          ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(AppDimensions.radiusSmall),
+                            topRight: Radius.circular(
+                              AppDimensions.radiusSmall,
+                            ),
+                          ),
+                          color: AppColors.grey300,
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(AppDimensions.radiusSmall),
+                            topRight: Radius.circular(
+                              AppDimensions.radiusSmall,
+                            ),
+                          ),
+                          child: Image.file(
+                            image,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Icon(
+                                Icons.image,
+                                color: AppColors.grey400,
+                              );
+                            },
+                          ),
                         ),
                       ),
-                      PopupMenuItem(
-                        value: 'delete',
-                        child: Row(
-                          children: [
-                             Icon(Icons.delete, size: AppDimensions.iconSmall, color: AppColors.redColor),
-                            Spacing.width(AppDimensions.spacingMedium),
-                            CommonText(text: AppTexts.delete, color: AppColors.redColor),
-                          ],
-                        ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(AppDimensions.paddingSmall),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CommonText(
+                            text: fileName,
+                            fontSize: AppFontSizes.fontNeNoSmall,
+                            fontWeight: AppFontWeights.medium,
+                            color: AppColors.blackColor,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          CommonText(
+                            text: fileSize,
+                            fontSize: AppFontSizes.fontNeNoSmall,
+                            color: AppColors.grey400,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  onTap: () {
-                    controller.currentImage.value = image;
-                    Get.toNamed(AppRoutes.documentEditor);
-                  },
+                    ),
+                  ],
                 ),
               ),
             );
@@ -133,9 +139,14 @@ class FilesTab extends GetView<ScanController> {
     );
   }
 
-  void _showContextMenu(BuildContext context, File imageFile, String title, int index) {
+  void _showContextMenu(
+    BuildContext context,
+    File imageFile,
+    String title,
+    int index,
+  ) {
     final controller = Get.find<ScanController>();
-    
+
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -153,33 +164,47 @@ class FilesTab extends GetView<ScanController> {
           children: [
             // Rename Option
             ListTile(
-              leading: const Icon(Icons.edit_outlined, color: AppColors.black87),
+              leading: const Icon(
+                Icons.edit_outlined,
+                color: AppColors.black87,
+              ),
               title: CommonText(
                 text: AppTexts.renameDocument,
                 fontSize: AppFontSizes.font16,
               ),
-              trailing: Icon(Icons.edit, size: AppDimensions.iconSmall, color: AppColors.grey400),
+              trailing: Icon(
+                Icons.edit,
+                size: AppDimensions.iconSmall,
+                color: AppColors.grey400,
+              ),
               onTap: () {
                 Get.back();
                 _showRenameDialog(title);
               },
             ),
-            
+
             // Share Option
             ListTile(
-              leading: const Icon(Icons.share_outlined, color: AppColors.black87),
+              leading: const Icon(
+                Icons.share_outlined,
+                color: AppColors.black87,
+              ),
               title: CommonText(
                 text: AppTexts.share,
                 fontSize: AppFontSizes.font16,
               ),
-              trailing: Icon(Icons.ios_share, size: AppDimensions.iconSmall, color: AppColors.grey400),
+              trailing: Icon(
+                Icons.ios_share,
+                size: AppDimensions.iconSmall,
+                color: AppColors.grey400,
+              ),
               onTap: () {
                 Get.back();
                 controller.currentImage.value = imageFile;
                 controller.shareAsJPG();
               },
             ),
-            
+
             // Favourite Option
             ListTile(
               leading: const Icon(Icons.star_outline, color: AppColors.black87),
@@ -187,27 +212,36 @@ class FilesTab extends GetView<ScanController> {
                 text: AppTexts.favorites,
                 fontSize: AppFontSizes.font16,
               ),
-              trailing: Icon(Icons.star_border, size: AppDimensions.iconSmall, color: AppColors.grey400),
+              trailing: Icon(
+                Icons.star_border,
+                size: AppDimensions.iconSmall,
+                color: AppColors.grey400,
+              ),
               onTap: () {
                 Get.back();
-                AppConstants.showCommonSnackBar(
-                  message: 'Added to favourites',
-                );
+                AppConstants.showCommonSnackBar(message: 'Added to favourites');
               },
             ),
-            
+
             // Delete Option (Red)
             ListTile(
-              leading: const Icon(Icons.delete_outline, color: AppColors.redColor),
+              leading: const Icon(
+                Icons.delete_outline,
+                color: AppColors.redColor,
+              ),
               title: CommonText(
                 text: AppTexts.delete,
                 fontSize: AppFontSizes.font16,
                 color: AppColors.redColor,
               ),
-              trailing: Icon(Icons.delete, size: AppDimensions.iconSmall, color: AppColors.redColor),
+              trailing: Icon(
+                Icons.delete,
+                size: AppDimensions.iconSmall,
+                color: AppColors.redColor,
+              ),
               onTap: () {
                 Get.back();
-                _confirmDelete(imageFile, title, index);
+                _confirmDelete(index);
               },
             ),
           ],
@@ -217,8 +251,10 @@ class FilesTab extends GetView<ScanController> {
   }
 
   void _showRenameDialog(String currentName) {
-    final TextEditingController nameController = TextEditingController(text: currentName);
-    
+    final TextEditingController nameController = TextEditingController(
+      text: currentName,
+    );
+
     Get.dialog(
       AlertDialog(
         title: CommonText(text: AppTexts.renameDocument),
@@ -249,9 +285,9 @@ class FilesTab extends GetView<ScanController> {
     );
   }
 
-  void _confirmDelete(File imageFile, String title, int index) {
+  void _confirmDelete(int index) {
     final controller = Get.find<ScanController>();
-    
+
     Get.dialog(
       AlertDialog(
         title: CommonText(text: AppTexts.deleteDocument),
@@ -270,10 +306,7 @@ class FilesTab extends GetView<ScanController> {
                 isError: true,
               );
             },
-            child: CommonText(
-              text: AppTexts.delete,
-              color: Colors.red,
-            ),
+            child: CommonText(text: AppTexts.delete, color: Colors.red),
           ),
         ],
       ),
