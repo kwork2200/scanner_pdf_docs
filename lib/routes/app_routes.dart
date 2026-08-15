@@ -12,4 +12,6 @@ class AppRoutes {
   static const idCardScanner = '/id-card-scanner';
   static const countObjects = '/count-objects';
   static const signature = '/signature';
+  static const tools = '/tools';
+  static const account = '/account';
 }

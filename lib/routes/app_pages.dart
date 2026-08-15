@@ -22,6 +22,10 @@ import 'package:scanner_pdf_docs/screens/count_objects/count_objects_screen.dart
 import 'package:scanner_pdf_docs/screens/count_objects/count_objects_binding.dart';
 import 'package:scanner_pdf_docs/screens/signature/signature_screen.dart';
 import 'package:scanner_pdf_docs/screens/signature/signature_binding.dart';
+import 'package:scanner_pdf_docs/screens/tools/tools_screen.dart';
+import 'package:scanner_pdf_docs/screens/tools/tools_binding.dart';
+import 'package:scanner_pdf_docs/screens/account/account_screen.dart';
+import 'package:scanner_pdf_docs/screens/account/account_binding.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -89,6 +93,16 @@ class AppPages {
       name: AppRoutes.signature,
       page: () => const SignatureScreen(),
       binding: SignatureBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.tools,
+      page: () => const ToolsScreen(),
+      binding: ToolsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.account,
+      page: () => const AccountScreen(),
+      binding: AccountBinding(),
     ),
   ];
 }

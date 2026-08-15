@@ -34,6 +34,7 @@ class AppTexts {
   static String get navScanner => 'Scanner';
   static String get scan => 'Scan';
   static String get navSettings => 'Settings';
+  static String get tools => 'Tools';
   
   // Scanner
   static String get scanDocument => 'Scan Document';
@@ -103,6 +104,22 @@ class AppTexts {
   static String get logout => 'Logout';
   static String get confirmLogout => 'Confirm Logout';
   static String get logoutMessage => 'Are you sure you want to logout?';
+  
+  // Account Screen
+  static String get pdfScannerApp => 'PDF Scanner App';
+  static String get pro => 'PRO';
+  static String get unlimitedScanExport => 'Unlimited Scan & Export';
+  static String get textRecognition => 'Text Recognition (OCR)';
+  static String get signStamp => 'Sign & Stamp';
+  static String get noAdsWatermarks => 'No Ads & Watermarks';
+  static String get moreAboutPremium => 'More about Premium';
+  static String get copyUserId => 'Copy User ID';
+  static String get appPin => 'App PIN';
+  static String get getPro => 'Get Pro';
+  static String get restorePurchases => 'Restore Purchases';
+  static String get startAppWith => 'Start App With';
+  static String get pictureQuality => 'Picture Quality';
+  static String get userIdCopied => 'User ID copied to clipboard';
   
   // Validation
   static String get pleaseEnterName => 'Please enter name';
