@@ -23,8 +23,20 @@ class BatchScanController extends GetxController {
 
   @override
   void onClose() {
-    cameraController?.dispose();
+    disposeCamera();
     super.onClose();
+  }
+
+  Future<void> disposeCamera() async {
+    try {
+      if (cameraController != null && cameraController!.value.isInitialized) {
+        await cameraController!.dispose();
+        cameraController = null;
+        isCameraInitialized.value = false;
+      }
+    } catch (e) {
+      print('Error disposing camera: $e');
+    }
   }
 
   Future<void> initializeCamera() async {
@@ -45,24 +57,32 @@ class BatchScanController extends GetxController {
   }
 
   Future<void> initializeCameraController(CameraDescription description) async {
-    cameraController = CameraController(
-      description,
-      ResolutionPreset.high,
-      enableAudio: false,
-    );
-
     try {
+      await disposeCamera();
+      
+      cameraController = CameraController(
+        description,
+        ResolutionPreset.high,
+        enableAudio: false,
+      );
+
       await cameraController!.initialize();
       isCameraInitialized.value = true;
     } catch (e) {
       Get.snackbar('Error', 'Failed to initialize camera controller: $e');
+      isCameraInitialized.value = false;
     }
   }
 
-  void switchCamera() {
+  void switchCamera() async {
     if (cameras != null && cameras!.length > 1) {
-      selectedCameraIndex.value = (selectedCameraIndex.value + 1) % cameras!.length;
-      initializeCameraController(cameras![selectedCameraIndex.value]);
+      try {
+        await disposeCamera();
+        selectedCameraIndex.value = (selectedCameraIndex.value + 1) % cameras!.length;
+        await initializeCameraController(cameras![selectedCameraIndex.value]);
+      } catch (e) {
+        Get.snackbar('Error', 'Failed to switch camera: $e');
+      }
     }
   }
 
