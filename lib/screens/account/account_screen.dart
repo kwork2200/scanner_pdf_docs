@@ -37,9 +37,7 @@ class AccountScreen extends GetView<AccountController> {
                   icon: item.icon,
                   title: item.title,
                   subtitle: item.subtitle,
-                  onTap: item.title == AppTexts.copyUserId
-                      ? controller.copyUserId
-                      : (item.onTap ?? () {}),
+                  onTap: item.onTap,
                 ),
                 if (index < controller.settingsItems.length - 1)
                   Spacing.height(AppDimensions.spacingSmall),

@@ -65,22 +65,19 @@ class SignatureScreen extends GetView<SignatureController> {
                     ),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 10.h,
-                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10.h),
                   prefixIcon: Icon(Icons.search, color: AppColors.grey400),
                   onChanged: controller.onSearchChanged,
                 ),
               ),
             ),
-            Spacing.height(AppDimensions.paddingSmall),
+            // Spacing.height(AppDimensions.paddingSmall),
             Padding(
               padding: EdgeInsets.all(AppDimensions.paddingMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Spacing.height(AppDimensions.paddingSmall),
+                  // Spacing.height(AppDimensions.paddingSmall),
                   CommonText(
                     text: 'Add Signature',
                     fontSize: AppFontSizes.font14,
@@ -90,23 +87,24 @@ class SignatureScreen extends GetView<SignatureController> {
                   Spacing.height(AppDimensions.spacingLarge),
                   Row(
                     children: [
-                      Expanded(
-                        child: _buildAddOption(
+                      // Expanded(
+                      //   child:
+                        _buildAddOption(
                           icon: Icons.photo_library,
                           label: 'From Gallery',
                           color: AppColors.infoBlue,
                           onTap: controller.pickSignatureFromGallery,
                         ),
-                      ),
-                      Spacing.width(AppDimensions.paddingMedium),
-                      Expanded(
-                        child: _buildAddOption(
-                          icon: Icons.camera_alt,
-                          label: 'Capture',
-                          color: AppColors.infoBlue,
-                          onTap: controller.captureSignature,
-                        ),
-                      ),
+                      // ),
+                      // Spacing.width(AppDimensions.paddingMedium),
+                      // Expanded(
+                      //   child: _buildAddOption(
+                      //     icon: Icons.camera_alt,
+                      //     label: 'Capture',
+                      //     color: AppColors.infoBlue,
+                      //     onTap: controller.captureSignature,
+                      //   ),
+                      // ),
                     ],
                   ),
                   Spacing.height(AppDimensions.spacingXLarge),
@@ -119,14 +117,13 @@ class SignatureScreen extends GetView<SignatureController> {
                   Spacing.height(AppDimensions.spacingXLarge),
                   Obx(() {
                     final filteredSignatures = controller.getFilteredSignatures();
+
                     if (filteredSignatures.isEmpty) {
                       return Center(
                         child: Padding(
                           padding: EdgeInsets.all(AppDimensions.paddingXLarge),
                           child: CommonText(
-                            text: controller.searchQuery.value.isEmpty
-                                ? 'No signatures found'
-                                : 'No matching signatures',
+                            text: controller.searchQuery.value.isEmpty ? 'No signatures found' : 'No matching signatures',
                             color: AppColors.grey400,
                             fontSize: AppFontSizes.font16,
                           ),
@@ -134,26 +131,21 @@ class SignatureScreen extends GetView<SignatureController> {
                       );
                     }
 
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: filteredSignatures.length,
-                      itemBuilder: (context, index) {
-                        final image = filteredSignatures[index];
-                        final fileSize = AppConstants.getFileSize(image);
-                        return RecentDocumentItem(
-                          imageFile: image,
-                          title: 'Signature ${index + 1}',
-                          date: '06.08.2026',
-                          size: fileSize,
-                          onTap: () {
-                            // Navigate to document editor
-                            Get.back();
-                          },
-                          onLongPress: () {
-                            _showContextMenu(context, image, 'Signature ${index + 1}');
-                          },
-                        );
+                    return RecentDocumentItemListView(
+                      images: filteredSignatures,
+                      titleBuilder: (index) {
+                        return 'Signature ${index + 1}';
+                      },
+                      sizeBuilder: (image) {
+                        return AppConstants.getFileSize(image);
+                      },
+                      onTap: (image) {
+                        return () {
+                          Get.back();
+                        };
+                      },
+                      onLongPress: (context, image, title) {
+                        _showContextMenu(context, image, title);
                       },
                     );
                   }),

@@ -5,18 +5,37 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:scanner_pdf_docs/utils/app_font_sizes.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:scanner_pdf_docs/utils/app_colors.dart';
 import 'package:scanner_pdf_docs/utils/app_texts.dart';
 
 class AppConstants {
   static final ImagePicker _imagePicker = ImagePicker();
+  // App URLs
+  static const String playStoreUrl = 'https://play.google.com/store/apps/details?id=com.xstudios.fastscan';
+  static const String contactUsUrl = 'https://fastscanapp.com/en/contact';
+  static const String privacyPolicyUrl = 'https://fastscanapp.com/en/privacy';
+  static const String termsConditionsUrl = 'https://fastscanapp.com/en/terms';
+  static const String faqUrl = 'https://fastscanapp.com/en#faq';
+  static const String shareMessage = 'Try PDF Scanner App! It helps scan and share any documents you need. http://play.google.com/store/apps/details?id=com.xstudios.fastscan';
 
-  static showCommonSnackBar({required String message, bool isError = false, BuildContext? context}) {
+  static showCommonSnackBar({required String message, bool isError = false, bool isSuccess = false, BuildContext? context}) {
     Get.snackbar(
       "",
       message,
       titleText: const SizedBox(),
-      backgroundColor: isError ? AppColors.redAccentColor : AppColors.primaryColor,
+      messageText: Text(
+        message,
+        style: TextStyle(
+          color: AppColors.whiteColor,
+          fontWeight: FontWeight.bold,
+          fontSize:AppFontSizes.font14,
+        ),
+      ),
+      backgroundColor: isError ? AppColors.redAccentColor : (isSuccess ? AppColors.successGreen : AppColors.primaryColor),
       colorText: AppColors.whiteColor,
       snackPosition: SnackPosition.BOTTOM,
       margin: EdgeInsets.only(bottom: 30.h, left: 16.w, right: 16.w),
@@ -64,6 +83,16 @@ class AppConstants {
     }
   }
 
+
+  static Future<String> getAppVersion() async {
+    try {
+      final packageInfo = await PackageInfo.fromPlatform();
+      return packageInfo.version;
+    } catch (e) {
+      return '2.3.6';
+    }
+  }
+
   static Future<void> pickImages({
     required Function(List<String>) onImagesSelected,
     bool allowMultiple = true,
@@ -93,6 +122,54 @@ class AppConstants {
       debugPrint('AppConstants.copyToClipboard error: $e');
       showCommonSnackBar(message: AppTexts.failedToCopy, isError: true);
     }
+  }
+
+  static Future<void> shareApp() async {
+    try {
+      await Share.share(shareMessage);
+    } catch (e) {
+      debugPrint('AppConstants.shareApp error: $e');
+      showCommonSnackBar(message: 'Failed to share app', isError: true);
+    }
+  }
+
+  static Future<void> openUrl(String url) async {
+    try {
+      final uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        debugPrint('Could not launch $url');
+        showCommonSnackBar(message: 'Could not open link', isError: true);
+      }
+    } catch (e) {
+      debugPrint('AppConstants.openUrl error: $e');
+      showCommonSnackBar(message: 'Failed to open link', isError: true);
+    }
+  }
+
+  static Future<void> rateApp() async {
+    await openUrl(playStoreUrl);
+  }
+
+  static Future<void> openContactUs() async {
+    await openUrl(contactUsUrl);
+  }
+
+  static Future<void> openPrivacyPolicy() async {
+    await openUrl(privacyPolicyUrl);
+  }
+
+  static Future<void> openTermsConditions() async {
+    await openUrl(termsConditionsUrl);
+  }
+
+  static Future<void> openFaq() async {
+    await openUrl(faqUrl);
+  }
+
+  static Future<void> showPremiumScreen() async {
+    Get.toNamed('/premium');
   }
 
 }

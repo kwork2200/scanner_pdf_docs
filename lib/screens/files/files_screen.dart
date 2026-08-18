@@ -60,7 +60,7 @@ class FilesTab extends GetView<ScanController> {
             return InkWell(
               onTap: () {
                 controller.currentImage.value = image;
-                Get.toNamed(AppRoutes.documentEditor);
+                Get.toNamed(AppRoutes.documentEditor, arguments: {'selectedImage': image});
               },
               onLongPress: () {
                 _showContextMenu(context, image, fileName, index);

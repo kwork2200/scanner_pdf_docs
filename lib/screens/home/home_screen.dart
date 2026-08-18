@@ -167,26 +167,24 @@ class HomeTab extends GetView<ScanController> {
                     );
                   }
 
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: controller.capturedImages.length,
-                    itemBuilder: (context, index) {
-                      final image = controller.capturedImages[index];
-                      final fileSize = AppConstants.getFileSize(image);
-                      return RecentDocumentItem(
-                        imageFile: image,
-                        title: 'M08 06, Doc ${index + 1}',
-                        date: '06.08.2026',
-                        size: fileSize,
-                        onTap: () {
-                          controller.currentImage.value = image;
-                          Get.toNamed(AppRoutes.documentEditor);
-                        },
-                        onLongPress: () {
-                          _showContextMenu(Get.context!, image, 'M08 06, Doc ${index + 1}');
-                        },
-                      );
+                  return RecentDocumentItemListView(
+                    images: controller.capturedImages,
+                    isGrid: false, // ListView
+                    titleBuilder: (index) {
+                      return 'M08 06, Doc ${index + 1}';
+                    },
+                    sizeBuilder: (image) {
+                      return AppConstants.getFileSize(image);
+                    },
+                    onTap: (image) {
+                      controller.currentImage.value = image;
+                      Get.toNamed(AppRoutes.documentEditor, arguments: {'selectedImage': image});
+                      return () {
+                        print("2222");
+                      };
+                    },
+                    onLongPress: (context, image, title) {
+                      _showContextMenu(context, image, title);
                     },
                   );
                 }),
@@ -225,6 +223,7 @@ class HomeTab extends GetView<ScanController> {
               title: CommonText(
                 text: AppTexts.renameDocument,
                 fontSize: AppFontSizes.font16,
+                color: AppColors.blackColor,
               ),
               trailing: Icon(
                 Icons.edit,
@@ -246,6 +245,8 @@ class HomeTab extends GetView<ScanController> {
               title: CommonText(
                 text: AppTexts.share,
                 fontSize: AppFontSizes.font16,
+                color: AppColors.blackColor,
+
               ),
               trailing: Icon(
                 Icons.ios_share,
@@ -266,6 +267,7 @@ class HomeTab extends GetView<ScanController> {
               title: CommonText(
                 text: AppTexts.favorites,
                 fontSize: AppFontSizes.font16,
+                color: AppColors.blackColor,
               ),
               trailing: Icon(
                 Icons.star_border,

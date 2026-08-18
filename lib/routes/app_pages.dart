@@ -18,14 +18,34 @@ import 'package:scanner_pdf_docs/screens/qr_scanner/qr_scanner_screen.dart';
 import 'package:scanner_pdf_docs/screens/qr_scanner/qr_scanner_binding.dart';
 import 'package:scanner_pdf_docs/screens/id_card_scanner/id_card_scanner_screen.dart';
 import 'package:scanner_pdf_docs/screens/id_card_scanner/id_card_scanner_binding.dart';
+import 'package:scanner_pdf_docs/screens/passport_scanner/passport_scanner_screen.dart';
+import 'package:scanner_pdf_docs/screens/passport_scanner/passport_scanner_binding.dart';
 import 'package:scanner_pdf_docs/screens/count_objects/count_objects_screen.dart';
 import 'package:scanner_pdf_docs/screens/count_objects/count_objects_binding.dart';
+import 'package:scanner_pdf_docs/screens/extract_text/extract_text_screen.dart';
+import 'package:scanner_pdf_docs/screens/extract_text/extract_text_binding.dart';
 import 'package:scanner_pdf_docs/screens/signature/signature_screen.dart';
 import 'package:scanner_pdf_docs/screens/signature/signature_binding.dart';
+import 'package:scanner_pdf_docs/screens/convert/convert_screen.dart';
+import 'package:scanner_pdf_docs/screens/convert/convert_binding.dart';
+import 'package:scanner_pdf_docs/screens/stamp/stamp_screen.dart';
+import 'package:scanner_pdf_docs/screens/stamp/stamp_binding.dart';
+import 'package:scanner_pdf_docs/screens/batch_scan/batch_scan_screen.dart';
+import 'package:scanner_pdf_docs/screens/batch_scan/batch_scan_binding.dart';
 import 'package:scanner_pdf_docs/screens/tools/tools_screen.dart';
 import 'package:scanner_pdf_docs/screens/tools/tools_binding.dart';
 import 'package:scanner_pdf_docs/screens/account/account_screen.dart';
 import 'package:scanner_pdf_docs/screens/account/account_binding.dart';
+import 'package:scanner_pdf_docs/screens/privacy_policy/privacy_policy_screen.dart';
+import 'package:scanner_pdf_docs/screens/privacy_policy/privacy_policy_binding.dart';
+import 'package:scanner_pdf_docs/screens/terms_conditions/terms_conditions_screen.dart';
+import 'package:scanner_pdf_docs/screens/terms_conditions/terms_conditions_binding.dart';
+import 'package:scanner_pdf_docs/screens/contact_us/contact_us_screen.dart';
+import 'package:scanner_pdf_docs/screens/contact_us/contact_us_binding.dart';
+import 'package:scanner_pdf_docs/screens/faq/faq_screen.dart';
+import 'package:scanner_pdf_docs/screens/faq/faq_binding.dart';
+import 'package:scanner_pdf_docs/screens/premium/premium_screen.dart';
+import 'package:scanner_pdf_docs/screens/premium/premium_binding.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -57,6 +77,11 @@ class AppPages {
       binding: EditorBinding(),
     ),
     GetPage(
+      name: AppRoutes.batchScan,
+      page: () => const BatchScanScreen(),
+      binding: BatchScanBinding(),
+    ),
+    GetPage(
       name: AppRoutes.imageEditor,
       page: () {
         final args = Get.arguments as Map<String, dynamic>?;
@@ -85,14 +110,34 @@ class AppPages {
       binding: IdCardScannerBinding(),
     ),
     GetPage(
+      name: AppRoutes.passportScanner,
+      page: () => const PassportScannerScreen(),
+      binding: PassportScannerBinding(),
+    ),
+    GetPage(
       name: AppRoutes.countObjects,
       page: () => const CountObjectsScreen(),
       binding: CountObjectsBinding(),
     ),
     GetPage(
+      name: AppRoutes.extractText,
+      page: () => const ExtractTextScreen(),
+      binding: ExtractTextBinding(),
+    ),
+    GetPage(
       name: AppRoutes.signature,
       page: () => const SignatureScreen(),
       binding: SignatureBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.convert,
+      page: () => const ConvertScreen(),
+      binding: ConvertBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.stamp,
+      page: () => const StampScreen(),
+      binding: StampBinding(),
     ),
     GetPage(
       name: AppRoutes.tools,
@@ -103,6 +148,31 @@ class AppPages {
       name: AppRoutes.account,
       page: () => const AccountScreen(),
       binding: AccountBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.privacyPolicy,
+      page: () => const PrivacyPolicyScreen(),
+      binding: PrivacyPolicyBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.termsConditions,
+      page: () => const TermsConditionsScreen(),
+      binding: TermsConditionsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.contactUs,
+      page: () => const ContactUsScreen(),
+      binding: ContactUsBinding()
+    ),
+    GetPage(
+      name: AppRoutes.faq,
+      page: () => const FaqScreen(),
+      binding: FaqBinding()
+    ),
+    GetPage(
+      name: AppRoutes.premium,
+      page: () => const PremiumScreen(),
+      binding: PremiumBinding()
     ),
   ];
 }

@@ -18,6 +18,14 @@ class DocumentEditorScreen extends GetView<ScanController> {
 
   @override
   Widget build(BuildContext context) {
+    final args = Get.arguments;
+    if (args != null && args is Map<String, dynamic> && args.containsKey('selectedImage')) {
+      final selectedImage = args['selectedImage'] as File;
+      if (controller.currentImage.value != selectedImage) {
+        controller.currentImage.value = selectedImage;
+      }
+    }
+
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
@@ -43,12 +51,105 @@ class DocumentEditorScreen extends GetView<ScanController> {
       ),
       body: Column(
         children: [
-          // Document Pages Area
           Expanded(
             child: Obx(() {
+              final hasMultipleImages = controller.capturedImages.length > 1;
+              
+              if (hasMultipleImages) {
+                return GridView.builder(
+                  padding: EdgeInsets.all(AppDimensions.paddingMedium),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: AppDimensions.paddingMedium,
+                    mainAxisSpacing: AppDimensions.paddingMedium,
+                    childAspectRatio: 0.7,
+                  ),
+                  itemCount: controller.capturedImages.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == controller.capturedImages.length) {
+                      return GestureDetector(
+                        onTap: () {
+                          _showScanBottomSheet(context);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: AppColors.infoBlue.withOpacity(0.3),
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+                            color: AppColors.infoBlue.withOpacity(0.05),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(AppDimensions.paddingMedium),
+                                decoration: BoxDecoration(
+                                  color: AppColors.infoBlue.withOpacity(0.1),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.add_photo_alternate_outlined,
+                                  size: 40,
+                                  color: AppColors.infoBlue,
+                                ),
+                              ),
+                              Spacing.height(12),
+                              CommonText(
+                                text: 'Tap to add new',
+                                fontSize: AppFontSizes.font14,
+                                color: AppColors.blackColor.withOpacity(0.7),
+                              ),
+                              CommonText(
+                                text: 'pages',
+                                fontSize: AppFontSizes.font14,
+                                color: AppColors.blackColor.withOpacity(0.7),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                    
+                    final image = controller.capturedImages[index];
+                    return GestureDetector(
+                      onTap: () {
+                        controller.currentImage.value = image;
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+                          border: Border.all(
+                            color: controller.currentImage.value == image
+                                ? AppColors.infoBlue
+                                : Colors.grey[300]!,
+                            width: 2,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(AppDimensions.radiusMedium - 2),
+                          child: Image.file(
+                            image,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }
+              
               return Row(
                 children: [
-                  // Left Side - Captured Images
                   if (controller.capturedImages.isNotEmpty)
                     Expanded(
                       flex: 1,
@@ -82,8 +183,6 @@ class DocumentEditorScreen extends GetView<ScanController> {
                         },
                       ),
                     ),
-                  
-                  // Right Side - Add New Pages Button
                   Expanded(
                     flex: 1,
                     child: GestureDetector(
@@ -135,8 +234,6 @@ class DocumentEditorScreen extends GetView<ScanController> {
               );
             }),
           ),
-          
-          // Bottom Action Buttons
           Container(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
             decoration: BoxDecoration(
@@ -152,7 +249,6 @@ class DocumentEditorScreen extends GetView<ScanController> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // Add Button
                 _buildActionButton(
                   icon: Icons.note_add_outlined,
                   label: 'Add',
@@ -161,8 +257,6 @@ class DocumentEditorScreen extends GetView<ScanController> {
                     _showScanBottomSheet(context);
                   },
                 ),
-                
-                // Share Button
                 _buildActionButton(
                   icon: Icons.share_outlined,
                   label: 'Share',
@@ -171,8 +265,6 @@ class DocumentEditorScreen extends GetView<ScanController> {
                     _showShareOptions(context);
                   },
                 ),
-                
-                // Email Button
                 _buildActionButton(
                   icon: Icons.email_outlined,
                   label: 'Email',

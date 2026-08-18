@@ -5,13 +5,23 @@ class AppRoutes {
   static const scan = '/scan';
   static const gallery = '/gallery';
   static const cameraScan = '/camera-scan';
+  static const batchScan = '/batch-scan';
   static const documentEditor = '/document-editor';
   static const imageEditor = '/image-editor';
   static const previewShare = '/preview-share';
   static const qrScanner = '/qr-scanner';
   static const idCardScanner = '/id-card-scanner';
+  static const passportScanner = '/passport-scanner';
   static const countObjects = '/count-objects';
+  static const extractText = '/extract-text';
   static const signature = '/signature';
+  static const convert = '/convert';
+  static const stamp = '/stamp';
   static const tools = '/tools';
   static const account = '/account';
+  static const privacyPolicy = '/privacy-policy';
+  static const termsConditions = '/terms-conditions';
+  static const contactUs = '/contact-us';
+  static const faq = '/faq';
+  static const premium = '/premium';
 }

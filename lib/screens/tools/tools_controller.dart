@@ -12,11 +12,13 @@ class ToolsController extends GetxController {
       icon: Icons.document_scanner_outlined,
       title: 'Single',
       subtitle: 'Scan Single Document',
+      route: AppRoutes.cameraScan,
     ),
     ToolModel(
       icon: Icons.view_carousel_outlined,
       title: 'Batch',
       subtitle: 'Scan Batch Document',
+      route: AppRoutes.batchScan,
     ),
     ToolModel(
       icon: Icons.grid_3x3_outlined,
@@ -34,6 +36,7 @@ class ToolsController extends GetxController {
       icon: Icons.badge_outlined,
       title: 'Passport',
       subtitle: 'Scan Passport',
+      route: AppRoutes.passportScanner,
     ),
     ToolModel(
       icon: Icons.qr_code_scanner_outlined,
@@ -45,6 +48,7 @@ class ToolsController extends GetxController {
       icon: Icons.text_fields_outlined,
       title: 'Extract Text',
       subtitle: 'Extract texts',
+      route: AppRoutes.extractText,
     ),
   ];
 
@@ -57,6 +61,7 @@ class ToolsController extends GetxController {
     EditToolModel(
       icon: Icons.branding_watermark_outlined,
       title: 'Stamp',
+      route: AppRoutes.stamp,
     ),
   ];
 
@@ -65,26 +70,31 @@ class ToolsController extends GetxController {
       icon: Icons.picture_as_pdf,
       iconColor: AppColors.redColor,
       title: 'Convert to PDF',
+      route: AppRoutes.convert,
     ),
     ConvertToolModel(
       icon: Icons.description,
       iconColor: AppColors.infoBlue,
       title: 'Convert to DOC',
+      route: AppRoutes.convert,
     ),
     ConvertToolModel(
       icon: Icons.image,
       iconColor: AppColors.darkBlueColor,
       title: 'Convert to JPG',
+      route: AppRoutes.convert,
     ),
     ConvertToolModel(
       icon: Icons.text_snippet,
       iconColor: AppColors.grey600,
       title: 'Convert to TXT',
+      route: AppRoutes.convert,
     ),
     ConvertToolModel(
       icon: Icons.description,
       iconColor: AppColors.orangeColor,
       title: 'Convert to PPTX',
+      route: AppRoutes.convert,
     ),
   ];
 

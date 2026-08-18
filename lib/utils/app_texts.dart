@@ -97,8 +97,10 @@ class AppTexts {
   static String get english => 'English';
   static String get privacyPolicy => 'Privacy Policy';
   static String get termsConditions => 'Terms & Conditions';
-  static String get aboutUs => 'About Us';
   static String get contactUs => 'Contact Us';
+  static String get aboutUs => 'About Us';
+  static String get copiedToClipboard => 'Copied to clipboard';
+  static String get failedToCopy => 'Failed to copy';
   static String get rateApp => 'Rate App';
   static String get shareApp => 'Share App';
   static String get logout => 'Logout';
@@ -246,16 +248,32 @@ class AppTexts {
   static String get scanQrCode => 'Scan QR Code';
   static String get positionQrCode => 'Position QR code within frame';
   static String get open => 'Open';
-  static String get copiedToClipboard => 'Copied to clipboard';
   static String get notValidUrl => 'Not a valid URL';
   static String get cannotOpenLink => 'Cannot open this link';
   static String get invalidUrl => 'Invalid URL';
-  static String get failedToCopy => 'Failed to copy';
-  
+
   static String get scanIdCard => 'Scan ID Card';
   static String get positionIdCard => 'Position ID card within the frame';
   static String get idCardDetected => 'ID Card Detected!';
   static String get autoCaptureOn => 'Auto Capture: ON';
   static String get autoCaptureOff => 'Auto Capture: OFF';
   static String get idCardCaptured => 'ID Card captured successfully!';
+  
+  // Premium Screen
+  static String get restore => 'Restore';
+  static String get unlimited => 'Unlimited';
+  static String get access => 'Access';
+  static String get rating => '4.8';
+  static String get trustedByUsers => 'Trusted by thousands of users';
+  static String get unlimitedScans => 'Unlimited Scans';
+  static String get textRecognitionOcr => 'Text Recognition (OCR)';
+  static String get easySignatures => 'Easy Signatures';
+  static String get pdfEditing => 'PDF Editing';
+  static String get lifetimeAccess => 'Lifetime Access';
+  static String get yearlyAccess => 'Yearly Access';
+  static String get tryForFree => 'Try for Free';
+  static String get subscriptionTerms => 'First %1\$d days at %2\$s. Auto-renews at %3\$s/%4\$s. No commitment.';
+  static String get privacy => 'Privacy';
+  static String get terms => 'Terms';
+  static String get cancelAnytime => 'Cancel Anytime';
 }

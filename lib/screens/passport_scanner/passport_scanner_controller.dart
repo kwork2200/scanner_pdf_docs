@@ -11,15 +11,15 @@ import 'package:scanner_pdf_docs/screens/scan/scan_controller.dart';
 import 'package:scanner_pdf_docs/utils/app_constants.dart';
 import 'package:scanner_pdf_docs/utils/app_texts.dart';
 
-class IdCardScannerController extends GetxController {
+class PassportScannerController extends GetxController {
   late CameraController cameraController;
   final isCameraInitialized = false.obs;
   final isFlashOn = false.obs;
-  final isAutoCapture = true.obs; // Always enabled for ID cards
+  final isAutoCapture = true.obs; // Always enabled for passport
   final detectedText = ''.obs;
   final isProcessing = false.obs;
   final capturedImage = Rx<File?>(null); // For preview before saving
-  final isCardDetected = false.obs; // Track if card is in frame
+  final isCardDetected = false.obs; // Track if passport is in frame
 
   final textRecognizer = TextRecognizer();
   late FaceDetector faceDetector;
@@ -68,7 +68,7 @@ class IdCardScannerController extends GetxController {
       await cameraController.initialize();
       isCameraInitialized.value = true;
 
-      // Auto capture is always enabled for ID cards
+      // Auto capture is always enabled for passport
       _startAutoCapture();
     } catch (e) {
       debugPrint('Error initializing camera: $e');
@@ -97,12 +97,12 @@ class IdCardScannerController extends GetxController {
     while (isAutoCapture.value && isCameraInitialized.value && capturedImage.value == null) {
       await Future.delayed(const Duration(milliseconds: 1500));
       if (!isProcessing.value && isAutoCapture.value && capturedImage.value == null) {
-        await _detectIdCard();
+        await _detectPassport();
       }
     }
   }
 
-  Future<void> _detectIdCard() async {
+  Future<void> _detectPassport() async {
     if (isProcessing.value || !isCameraInitialized.value || capturedImage.value != null) return;
 
     try {
@@ -119,64 +119,68 @@ class IdCardScannerController extends GetxController {
       final recognizedText = results[0] as RecognizedText;
       final faces = results[1] as List<Face>;
 
-      // Check if this is likely an ID card
-      final isIdCard = _isLikelyIdCard(recognizedText, faces);
+      // Check if this is likely a passport
+      final isPassport = _isLikelyPassport(recognizedText, faces);
 
-      if (isIdCard) {
-        // Card detected - stop auto capture and show preview
+      if (isPassport) {
+        // Passport detected - stop auto capture and show preview
         isCardDetected.value = true;
         detectedText.value = recognizedText.text;
         capturedImage.value = File(image.path);
         isAutoCapture.value = false; // Stop further captures
       } else {
-        // Not an ID card, delete temp image
+        // Not a passport, delete temp image
         await File(image.path).delete();
         isCardDetected.value = false;
       }
     } catch (e) {
-      debugPrint('Error detecting ID card: $e');
+      debugPrint('Error detecting passport: $e');
       isCardDetected.value = false;
     } finally {
       isProcessing.value = false;
     }
   }
 
-  bool _isLikelyIdCard(RecognizedText recognizedText, List<Face> faces) {
-    // Check for ID card keywords in the text
+  bool _isLikelyPassport(RecognizedText recognizedText, List<Face> faces) {
+    // Check for passport keywords in the text
     final text = recognizedText.text.toLowerCase();
-    final idKeywords = [
-      'id card', 'identity card', 'identification', 'license', 'driving',
-      'passport', 'national id', 'aadhaar', 'pan card', 'voter id',
-      'date of birth', 'dob', 'expiry', 'valid', 'sex', 'gender',
-      'blood group', 'signature', 'issue date', 'issued'
+    final passportKeywords = [
+      'passport', 'república', 'republic', 'united states', 'kingdom', 'federal',
+      'nationality', 'place of birth', 'date of birth', 'dob', 'sex', 'passport no',
+      'passport number', 'issued', 'expiry', 'valid until', 'authority', 'surname',
+      'given names', 'citizenship', 'type', 'code', 'mrz', 'machine readable'
     ];
     
-    final hasIdKeyword = idKeywords.any((keyword) => text.contains(keyword));
+    final hasPassportKeyword = passportKeywords.any((keyword) => text.contains(keyword));
     
-    // Check for face presence (ID cards typically have a photo)
+    // Check for face presence (passports typically have a photo)
     final hasFace = faces.isNotEmpty;
     
-    // Check text structure - ID cards have structured text
+    // Check text structure - passports have structured text
     final textBlocks = recognizedText.blocks;
     final hasStructuredText = textBlocks.length >= 3 && 
                                text.length > 30 && 
-                               text.length < 500;
+                               text.length < 800;
     
-    // Check for numeric patterns (dates, ID numbers)
+    // Check for numeric patterns (dates, passport numbers)
     final hasNumbers = RegExp(r'\d{4,}').hasMatch(text);
+    
+    // Check for MRZ pattern (machine readable zone - typically at bottom of passport)
+    final hasMRZPattern = RegExp(r'[A-Z0-9<]{30,}').hasMatch(text);
     
     // Score the likelihood
     int score = 0;
-    if (hasIdKeyword) score += 3;
+    if (hasPassportKeyword) score += 3;
     if (hasFace) score += 2;
     if (hasStructuredText) score += 1;
     if (hasNumbers) score += 1;
+    if (hasMRZPattern) score += 2;
     
-    // Need at least 4 points to be considered an ID card
+    // Need at least 4 points to be considered a passport
     return score >= 4;
   }
 
-  Future<void> captureIdCard() async {
+  Future<void> capturePassport() async {
     if (!isCameraInitialized.value || isProcessing.value || capturedImage.value != null) return;
 
     try {
@@ -198,8 +202,8 @@ class IdCardScannerController extends GetxController {
       final recognizedText = results[0] as RecognizedText;
       final faces = results[1] as List<Face>;
 
-      // Validate that this is an ID card
-      if (!_isLikelyIdCard(recognizedText, faces)) {
+      // Validate that this is a passport
+      if (!_isLikelyPassport(recognizedText, faces)) {
         await File(image.path).delete();
         return;
       }
@@ -215,7 +219,7 @@ class IdCardScannerController extends GetxController {
     }
   }
 
-  Future<void> confirmAndSaveIdCard() async {
+  Future<void> confirmAndSavePassport() async {
 
     if (capturedImage.value == null) return;
 
@@ -225,7 +229,7 @@ class IdCardScannerController extends GetxController {
       await Gal.putImage(capturedImage.value!.path);
 
       final appDir = await getApplicationDocumentsDirectory();
-      final fileName = 'id_card_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final fileName = 'passport_${DateTime.now().millisecondsSinceEpoch}.jpg';
       final savedPath = '${appDir.path}/$fileName';
       await capturedImage.value!.copy(savedPath);
       
@@ -233,7 +237,7 @@ class IdCardScannerController extends GetxController {
       await scanController.addFile(File(savedPath));
 
     } catch (e) {
-      AppConstants.showCommonSnackBar(message: 'Failed to save ID card: $e', isError: true);
+      AppConstants.showCommonSnackBar(message: 'Failed to save passport: $e', isError: true);
     } finally {
       isProcessing.value = false;
     }
@@ -254,7 +258,7 @@ class IdCardScannerController extends GetxController {
     _startAutoCapture();
   }
 
-  Future<void> _processAndSaveIdCard(File imageFile) async {
+  Future<void> _processAndSavePassport(File imageFile) async {
     try {
       final inputImage = InputImage.fromFilePath(imageFile.path);
       
@@ -267,8 +271,8 @@ class IdCardScannerController extends GetxController {
       final recognizedText = results[0] as RecognizedText;
       final faces = results[1] as List<Face>;
 
-      // Validate that this is an ID card
-      if (!_isLikelyIdCard(recognizedText, faces)) {
+      // Validate that this is a passport
+      if (!_isLikelyPassport(recognizedText, faces)) {
         await imageFile.delete();
         return;
       }
@@ -277,7 +281,7 @@ class IdCardScannerController extends GetxController {
       capturedImage.value = imageFile;
       isAutoCapture.value = false;
     } catch (e) {
-      debugPrint('Error processing ID card: $e');
+      debugPrint('Error processing passport: $e');
       await imageFile.delete();
     }
   }
@@ -289,7 +293,7 @@ class IdCardScannerController extends GetxController {
       );
 
       if (image != null) {
-        await _processAndSaveIdCard(File(image.path));
+        await _processAndSavePassport(File(image.path));
       }
     } catch (e) {
       debugPrint('Error picking from gallery: $e');
