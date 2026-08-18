@@ -66,7 +66,7 @@ class StampScreen extends GetView<StampController> {
                     borderSide: BorderSide.none,
                   ),
                   contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10.h),
-                  prefixIcon: Icon(Icons.search, color: AppColors.grey400),
+                  prefixIcon: Icon(Icons.search, color: AppColors.grey),
                   onChanged: controller.onSearchChanged,
                 ),
               ),
@@ -92,7 +92,7 @@ class StampScreen extends GetView<StampController> {
                           padding: EdgeInsets.all(AppDimensions.paddingXLarge),
                           child: CommonText(
                             text: controller.searchQuery.value.isEmpty ? 'No files found' : 'No matching files',
-                            color: AppColors.grey400,
+                            color: AppColors.grey,
                             fontSize: AppFontSizes.font14,
                           ),
                         ),

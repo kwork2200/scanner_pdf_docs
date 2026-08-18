@@ -1,5 +1,8 @@
 import 'dart:io';
 import 'package:get/get.dart';
+import 'package:scanner_pdf_docs/screens/app_pin/app_pin/app_pin_screen.dart';
+import 'package:scanner_pdf_docs/screens/app_pin/pin_verification/pin_verification_binding.dart';
+import 'package:scanner_pdf_docs/screens/app_pin/pin_verification/pin_verification_screen.dart';
 import 'package:scanner_pdf_docs/screens/bottom_nav_bar/bottom_nav_bar_screen.dart';
 import 'package:scanner_pdf_docs/screens/home/home_screen.dart';
 import 'package:scanner_pdf_docs/screens/splash/splash_binding.dart';
@@ -46,6 +49,13 @@ import 'package:scanner_pdf_docs/screens/faq/faq_screen.dart';
 import 'package:scanner_pdf_docs/screens/faq/faq_binding.dart';
 import 'package:scanner_pdf_docs/screens/premium/premium_screen.dart';
 import 'package:scanner_pdf_docs/screens/premium/premium_binding.dart';
+import 'package:scanner_pdf_docs/screens/app_pin/app_pin/app_pin_binding.dart';
+import 'package:scanner_pdf_docs/screens/app_pin/create_pin/create_pin_screen.dart';
+import 'package:scanner_pdf_docs/screens/app_pin/create_pin/create_pin_binding.dart';
+import 'package:scanner_pdf_docs/screens/picture_quality/picture_quality_screen.dart';
+import 'package:scanner_pdf_docs/screens/picture_quality/picture_quality_binding.dart';
+import 'package:scanner_pdf_docs/screens/start_app_with/start_app_with_screen.dart';
+import 'package:scanner_pdf_docs/screens/start_app_with/start_app_with_binding.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -173,6 +183,31 @@ class AppPages {
       name: AppRoutes.premium,
       page: () => const PremiumScreen(),
       binding: PremiumBinding()
+    ),
+    GetPage(
+      name: AppRoutes.appPin,
+      page: () => const AppPinScreen(),
+      binding: AppPinBinding()
+    ),
+    GetPage(
+      name: AppRoutes.createPin,
+      page: () => const CreatePinScreen(),
+      binding: CreatePinBinding()
+    ),
+    GetPage(
+      name: AppRoutes.pinVerification,
+      page: () => const PinVerificationScreen(),
+      binding: PinVerificationBinding()
+    ),
+    GetPage(
+      name: AppRoutes.pictureQuality,
+      page: () => const PictureQualityScreen(),
+      binding: PictureQualityBinding()
+    ),
+    GetPage(
+      name: AppRoutes.startAppWith,
+      page: () => const StartAppWithScreen(),
+      binding: StartAppWithBinding()
     ),
   ];
 }

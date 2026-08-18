@@ -15,7 +15,7 @@ class CommonLoader extends StatelessWidget {
       child: SizedBox(
         height: size,
         width: size,
-        child: CircularProgressIndicator(color: color ?? AppColors.primaryColor, strokeWidth: strokeWidth),
+        child: CircularProgressIndicator(color: color ?? AppColors.infoBlue, strokeWidth: strokeWidth),
       ),
     );
   }

@@ -215,7 +215,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
                           child: Center(
                             child: CommonText(
                               text: '1/1',
-                              color: AppColors.grey400,
+                              color: AppColors.grey,
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                             ),

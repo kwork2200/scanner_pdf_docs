@@ -45,7 +45,7 @@ class ScanToolsWidget extends GetView<ToolsController> {
           borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
           boxShadow: [
             BoxShadow(
-              color: AppColors.grey400.withOpacity(0.6),
+              color: AppColors.grey.withOpacity(0.6),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -80,7 +80,7 @@ class ScanToolsWidget extends GetView<ToolsController> {
                     text: tool.subtitle,
                     fontSize: AppFontSizes.font14,
                     fontWeight: AppFontWeights.semiBold,
-                    color: AppColors.grey400,
+                    color: AppColors.grey,
                   ),
                 ],
               ),

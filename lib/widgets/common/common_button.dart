@@ -44,7 +44,7 @@ class CommonButton extends StatelessWidget {
         onPressed: isEnabled ? onPressed : () => {},
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          backgroundColor: backgroundColor ?? (isEnabled ? AppColors.primaryColor : AppColors.blackColor),
+          backgroundColor: backgroundColor ?? (isEnabled ? AppColors.infoBlue : AppColors.blackColor),
           disabledBackgroundColor: AppColors.blackColor,
           side: borderColor != null ? BorderSide(
             color: borderColor!,

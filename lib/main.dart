@@ -4,9 +4,15 @@ import 'package:get/get.dart';
 import 'package:scanner_pdf_docs/routes/app_pages.dart';
 import 'package:scanner_pdf_docs/routes/app_routes.dart';
 import 'package:scanner_pdf_docs/screens/splash/splash_binding.dart';
+import 'package:scanner_pdf_docs/services/app_lifecycle_service.dart';
 import 'package:scanner_pdf_docs/utils/app_colors.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize AppLifecycleService
+  Get.put(AppLifecycleService(), permanent: true);
+  
   runApp(const MyApp());
 }
 

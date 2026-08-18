@@ -147,7 +147,7 @@ class CountObjectsScreen extends GetView<CountObjectsController> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: controller.isProcessing.value
-                              ? AppColors.grey400
+                              ? AppColors.grey
                               : AppColors.backgroundColor,
                         ),
                         child: controller.isProcessing.value

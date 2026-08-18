@@ -17,23 +17,29 @@ class CameraScanScreen extends GetView<ScanController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.blackColor,
-      body: Obx(() {
-        if (!controller.isCameraInitialized.value) {
-          return const Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(AppColors.whiteColor),
-            ),
-          );
-        }
+    return WillPopScope(
+      onWillPop: () async {
+        // Ensure camera is properly disposed when leaving screen
+        await controller.disposeCamera();
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.blackColor,
+        body: Obx(() {
+          if (!controller.isCameraInitialized.value) {
+            return const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.whiteColor),
+              ),
+            );
+          }
 
-        return Stack(
-          children: [
-            // Camera Preview
-            Positioned.fill(
-              child: CameraPreview(controller.cameraController!),
-            ),
+          return Stack(
+            children: [
+              // Camera Preview
+              Positioned.fill(
+                child: CameraPreview(controller.cameraController!),
+              ),
             
             // Document Frame Overlay
             Positioned.fill(
@@ -55,7 +61,10 @@ class CameraScanScreen extends GetView<ScanController> {
                     // Close Button
                     IconButton(
                       icon:  Icon(Icons.close, color: AppColors.whiteColor, size: AppDimensions.iconLarge),
-                      onPressed: () => Get.back(),
+                      onPressed: () async {
+                        await controller.disposeCamera();
+                        Get.back();
+                      },
                     ),
                     
                     // Flash Toggle
@@ -87,9 +96,10 @@ class CameraScanScreen extends GetView<ScanController> {
                       return Container(
                         margin: EdgeInsets.only(bottom: AppDimensions.paddingXMedium),
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             // Navigate to Image Editor Screen (not document editor)
                             if (controller.currentImage.value != null) {
+                              await controller.disposeCamera();
                               Get.off(() => ImageEditorScreen(
                                 imageFile: controller.currentImage.value!,
                               ));
@@ -153,6 +163,7 @@ class CameraScanScreen extends GetView<ScanController> {
           ],
         );
       }),
+      ),
     );
   }
 }

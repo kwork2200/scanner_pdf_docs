@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:scanner_pdf_docs/screens/app_pin/app_pin/app_pin_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:scanner_pdf_docs/screens/account/models/account_settings_model.dart';
 import 'package:scanner_pdf_docs/screens/account/models/premium_feature_model.dart';
@@ -151,6 +152,10 @@ class AccountController extends GetxController {
   void onInit() {
     super.onInit();
 
+    if (!Get.isRegistered<AppPinController>()) {
+      Get.put(AppPinController());
+    }
+
     initAppVersion();
 
     settingsItems = [
@@ -168,23 +173,26 @@ class AccountController extends GetxController {
       AccountSettingsModel(
         icon: Icons.lock_outline,
         title: AppTexts.appPin,
+        onTap: () => Get.toNamed(AppRoutes.appPin),
       ),
       AccountSettingsModel(
         icon: Icons.star_outline,
         title: AppTexts.getPro,
         onTap: openPremium,
       ),
-      AccountSettingsModel(
-        icon: Icons.restore_outlined,
-        title: AppTexts.restorePurchases,
-      ),
+      // AccountSettingsModel(
+      //   icon: Icons.restore_outlined,
+      //   title: AppTexts.restorePurchases,
+      // ),
       AccountSettingsModel(
         icon: Icons.open_in_new_outlined,
         title: AppTexts.startAppWith,
+        onTap: () => Get.toNamed(AppRoutes.startAppWith),
       ),
       AccountSettingsModel(
         icon: Icons.photo_outlined,
         title: AppTexts.pictureQuality,
+        onTap: () => Get.toNamed(AppRoutes.pictureQuality),
       ),
       AccountSettingsModel(
         icon: Icons.help_outline,

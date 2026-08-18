@@ -66,7 +66,7 @@ class ConvertScreen extends GetView<ConvertController> {
                     borderSide: BorderSide.none,
                   ),
                   contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10.h),
-                  prefixIcon: Icon(Icons.search, color: AppColors.grey400),
+                  prefixIcon: Icon(Icons.search, color: AppColors.grey),
                   onChanged: controller.onSearchChanged,
                 ),
               ),
@@ -92,7 +92,7 @@ class ConvertScreen extends GetView<ConvertController> {
                           padding: EdgeInsets.all(AppDimensions.paddingXLarge),
                           child: CommonText(
                             text: controller.searchQuery.value.isEmpty ? 'No files found' : 'No matching files',
-                            color: AppColors.grey400,
+                            color: AppColors.grey,
                             fontSize: AppFontSizes.font14,
                           ),
                         ),
@@ -108,8 +108,11 @@ class ConvertScreen extends GetView<ConvertController> {
                         return AppConstants.getFileSize(image);
                       },
                       onTap: (image) {
+                        print("cc");
+
+                        controller.showConversionDialog(context);
                         return () {
-                          Get.back();
+                          print("image");
                         };
                       },
                       onLongPress: (context, image, title) {},

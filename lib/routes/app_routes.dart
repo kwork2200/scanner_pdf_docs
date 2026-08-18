@@ -24,4 +24,9 @@ class AppRoutes {
   static const contactUs = '/contact-us';
   static const faq = '/faq';
   static const premium = '/premium';
+  static const appPin = '/app-pin';
+  static const createPin = '/create-pin';
+  static const pinVerification = '/pin-verification';
+  static const pictureQuality = '/picture-quality';
+  static const startAppWith = '/start-app-with';
 }

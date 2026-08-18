@@ -35,7 +35,7 @@ class AppConstants {
           fontSize:AppFontSizes.font14,
         ),
       ),
-      backgroundColor: isError ? AppColors.redAccentColor : (isSuccess ? AppColors.successGreen : AppColors.primaryColor),
+      backgroundColor: isError ? AppColors.redAccentColor : (isSuccess ? AppColors.successGreen : AppColors.infoBlue),
       colorText: AppColors.whiteColor,
       snackPosition: SnackPosition.BOTTOM,
       margin: EdgeInsets.only(bottom: 30.h, left: 16.w, right: 16.w),

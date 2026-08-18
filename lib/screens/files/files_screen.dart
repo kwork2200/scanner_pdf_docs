@@ -30,7 +30,7 @@ class FilesTab extends GetView<ScanController> {
                 Icon(
                   Icons.folder_open,
                   size: AppDimensions.iconXLarge,
-                  color: AppColors.grey400,
+                  color: AppColors.grey,
                 ),
                 Spacing.height(AppDimensions.spacingSmall),
                 CommonText(
@@ -101,7 +101,7 @@ class FilesTab extends GetView<ScanController> {
                             errorBuilder: (context, error, stackTrace) {
                               return Icon(
                                 Icons.image,
-                                color: AppColors.grey400,
+                                color: AppColors.grey,
                               );
                             },
                           ),
@@ -124,7 +124,7 @@ class FilesTab extends GetView<ScanController> {
                           CommonText(
                             text: fileSize,
                             fontSize: AppFontSizes.fontNeNoSmall,
-                            color: AppColors.grey400,
+                            color: AppColors.grey,
                           ),
                         ],
                       ),
@@ -175,7 +175,7 @@ class FilesTab extends GetView<ScanController> {
               trailing: Icon(
                 Icons.edit,
                 size: AppDimensions.iconSmall,
-                color: AppColors.grey400,
+                color: AppColors.grey,
               ),
               onTap: () {
                 Get.back();
@@ -196,7 +196,7 @@ class FilesTab extends GetView<ScanController> {
               trailing: Icon(
                 Icons.ios_share,
                 size: AppDimensions.iconSmall,
-                color: AppColors.grey400,
+                color: AppColors.grey,
               ),
               onTap: () {
                 Get.back();
@@ -215,7 +215,7 @@ class FilesTab extends GetView<ScanController> {
               trailing: Icon(
                 Icons.star_border,
                 size: AppDimensions.iconSmall,
-                color: AppColors.grey400,
+                color: AppColors.grey,
               ),
               onTap: () {
                 Get.back();

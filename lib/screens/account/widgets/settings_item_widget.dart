@@ -69,7 +69,7 @@ class SettingsItemWidget extends StatelessWidget {
                       text: subtitle!,
                       fontSize: AppFontSizes.fontSmall,
                       fontWeight: AppFontWeights.normal,
-                      color: AppColors.grey400,
+                      color: AppColors.grey,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

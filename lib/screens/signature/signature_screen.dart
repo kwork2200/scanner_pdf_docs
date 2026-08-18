@@ -66,7 +66,7 @@ class SignatureScreen extends GetView<SignatureController> {
                     borderSide: BorderSide.none,
                   ),
                   contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10.h),
-                  prefixIcon: Icon(Icons.search, color: AppColors.grey400),
+                  prefixIcon: Icon(Icons.search, color: AppColors.grey),
                   onChanged: controller.onSearchChanged,
                 ),
               ),
@@ -124,7 +124,7 @@ class SignatureScreen extends GetView<SignatureController> {
                           padding: EdgeInsets.all(AppDimensions.paddingXLarge),
                           child: CommonText(
                             text: controller.searchQuery.value.isEmpty ? 'No signatures found' : 'No matching signatures',
-                            color: AppColors.grey400,
+                            color: AppColors.grey,
                             fontSize: AppFontSizes.font16,
                           ),
                         ),

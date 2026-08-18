@@ -50,7 +50,7 @@ class AccountScreen extends GetView<AccountController> {
               text: AppTexts.appVersion,
               fontSize: AppFontSizes.fontSmall,
               fontWeight: AppFontWeights.normal,
-              color: AppColors.grey400,
+              color: AppColors.grey,
             ),
           ),
           Spacing.height(AppDimensions.spacingXLarge),

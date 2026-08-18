@@ -120,6 +120,7 @@ class AppTexts {
   static String get getPro => 'Get Pro';
   static String get restorePurchases => 'Restore Purchases';
   static String get startAppWith => 'Start App With';
+  static String get scannerCamera => 'Scanner (Camera)';
   static String get pictureQuality => 'Picture Quality';
   static String get userIdCopied => 'User ID copied to clipboard';
   
@@ -251,7 +252,6 @@ class AppTexts {
   static String get notValidUrl => 'Not a valid URL';
   static String get cannotOpenLink => 'Cannot open this link';
   static String get invalidUrl => 'Invalid URL';
-
   static String get scanIdCard => 'Scan ID Card';
   static String get positionIdCard => 'Position ID card within the frame';
   static String get idCardDetected => 'ID Card Detected!';
@@ -276,4 +276,22 @@ class AppTexts {
   static String get privacy => 'Privacy';
   static String get terms => 'Terms';
   static String get cancelAnytime => 'Cancel Anytime';
+  
+  // App PIN Screen
+  static String get pinProtection => 'PIN will protect your data from unauthorized\naccess.';
+  static String get enterPin => 'Enter PIN';
+  static String get createPin => 'Create PIN';
+  static String get confirmPin => 'Confirm PIN';
+  static String get incorrectPin => 'Incorrect PIN';
+  static String get pinCreated => 'PIN created successfully';
+  static String get pinConfirmed => 'PIN confirmed successfully';
+  static String get pinVerified => 'PIN verified successfully';
+  static String get pinSetSuccessfully => 'App PIN has been set successfully';
+  static String get pinsDoNotMatch => 'PINs do not match. Please try again.';
+  
+  // Picture Quality Screen
+  static String get low => 'Low';
+  static String get medium => 'Medium';
+  static String get high => 'High';
+  static String get hd => 'HD';
 }

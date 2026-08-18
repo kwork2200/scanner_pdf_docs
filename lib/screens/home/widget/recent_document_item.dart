@@ -104,7 +104,8 @@ class RecentDocumentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: isGrid ? null : onTap,
+      onTap: onTap,
+      // onTap: isGrid ? null : onTap,
       onLongPress: isGrid ? null : onLongPress,
       behavior: HitTestBehavior.opaque,
       child: Container(
@@ -164,7 +165,7 @@ class RecentDocumentItem extends StatelessWidget {
     return CommonText(
       text: '$date  $size',
       fontSize: AppFontSizes.fontNeNoSmall,
-      color: AppColors.grey400,
+      color: AppColors.grey,
       fontWeight: AppFontWeights.medium,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,

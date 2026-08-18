@@ -105,7 +105,7 @@ class ExtractTextScreen extends GetView<ExtractTextController> {
                         Spacing.height(AppDimensions.paddingMedium),
                         CommonText(
                           text: 'Extracting text...',
-                          color: AppColors.grey400,
+                          color: AppColors.grey,
                           fontSize: AppFontSizes.font14,
                         ),
                       ],
@@ -165,7 +165,7 @@ class ExtractTextScreen extends GetView<ExtractTextController> {
                       children: [
                         CommonText(
                           text: 'Tap the button below to extract text',
-                          color: AppColors.grey400,
+                          color: AppColors.grey,
                           fontSize: AppFontSizes.font14,
                           textAlign: TextAlign.center,
                         ),
@@ -208,7 +208,7 @@ class ExtractTextScreen extends GetView<ExtractTextController> {
                   padding: EdgeInsets.all(AppDimensions.paddingXLarge),
                   child: CommonText(
                     text: 'Select an image to extract text',
-                    color: AppColors.grey400,
+                    color: AppColors.grey,
                     fontSize: AppFontSizes.font16,
                   ),
                 ),

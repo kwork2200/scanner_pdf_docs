@@ -71,7 +71,7 @@ class ToolsScreen extends GetView<ToolsController> {
                 text: title,
                 fontSize: AppFontSizes.font14,
                 fontWeight: isSelected ? AppFontWeights.bold : AppFontWeights.bold,
-                color: isSelected ? AppColors.blackColor : AppColors.grey400,
+                color: isSelected ? AppColors.blackColor : AppColors.grey,
               ),
             ),
           ),

@@ -39,7 +39,7 @@ class BottomNavBrScreen extends GetView<BottomNavBarController> {
             controller.changeTab(index);
           },
           selectedItemColor: AppColors.infoBlue,
-          unselectedItemColor: AppColors.grey400,
+          unselectedItemColor: AppColors.grey,
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: AppTexts.navHome),
             BottomNavigationBarItem(icon: Icon(Icons.folder), label: AppTexts.files),

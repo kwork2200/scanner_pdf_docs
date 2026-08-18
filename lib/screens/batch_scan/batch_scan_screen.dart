@@ -175,9 +175,10 @@ class BatchScanScreen extends GetView<BatchScanController> {
                                 if (controller.capturedImages.isNotEmpty) {
                                   scanController.currentImage.value = controller.capturedImages.last;
                                 }
+
+                                Get.toNamed(AppRoutes.documentEditor);
                                 
-                                // Navigate to editor
-                                Get.off(() => const DocumentEditorScreen());
+                                // Get.off(() => const DocumentEditorScreen());
                               },
                               child: Container(
                                 width: 50,

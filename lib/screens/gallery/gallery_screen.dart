@@ -57,7 +57,7 @@ class GalleryScreen extends GetView<GalleryController> {
                  Icon(
                   Icons.photo_library_outlined,
                   size: AppDimensions.iconXLarge,
-                  color: AppColors.grey400,
+                  color: AppColors.grey,
                 ),
                  SizedBox(height: AppDimensions.spacingXLarge),
                 CommonText(

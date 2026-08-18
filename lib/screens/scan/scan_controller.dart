@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:camera/camera.dart';
 import 'package:gal/gal.dart';
@@ -41,13 +42,24 @@ class ScanController extends GetxController {
 
   @override
   void onClose() {
-    cameraController?.dispose();
+    disposeCamera();
     super.onClose();
+  }
+
+  Future<void> disposeCamera() async {
+    try {
+      if (cameraController != null && cameraController!.value.isInitialized) {
+        await cameraController!.dispose();
+        cameraController = null;
+        isCameraInitialized.value = false;
+      }
+    } catch (e) {
+      debugPrint('Error disposing camera: $e');
+    }
   }
 
   Future<void> initializeCamera() async {
     try {
-      // Request camera permission
       final cameraPermission = await Permission.camera.request();
       if (!cameraPermission.isGranted) {
         Get.snackbar('Permission', 'Camera permission is required');
@@ -64,35 +76,45 @@ class ScanController extends GetxController {
   }
 
   Future<void> initializeCameraController(CameraDescription description) async {
-    cameraController = CameraController(
-      description,
-      ResolutionPreset.high,
-      enableAudio: false,
-    );
-
     try {
+      await disposeCamera();
+      
+      cameraController = CameraController(
+        description,
+        ResolutionPreset.high,
+        enableAudio: false,
+      );
+
       await cameraController!.initialize();
       isCameraInitialized.value = true;
     } catch (e) {
+      debugPrint('Failed to initialize camera controller: $e');
       Get.snackbar('Error', 'Failed to initialize camera controller: $e');
+      isCameraInitialized.value = false;
     }
   }
 
-  void switchCamera() {
+  Future<void> switchCamera() async {
     if (cameras != null && cameras!.length > 1) {
-      selectedCameraIndex.value = (selectedCameraIndex.value + 1) % cameras!.length;
-      initializeCameraController(cameras![selectedCameraIndex.value]);
+      try {
+        await disposeCamera();
+        
+        selectedCameraIndex.value = (selectedCameraIndex.value + 1) % cameras!.length;
+        await initializeCameraController(cameras![selectedCameraIndex.value]);
+      } catch (e) {
+        Get.snackbar('Error', 'Failed to switch camera: $e');
+      }
     }
   }
 
-  void toggleFlash() async {
-    if (cameraController != null) {
+  Future<void> toggleFlash() async {
+    if (cameraController != null && cameraController!.value.isInitialized) {
       try {
-        await cameraController!.setFlashMode(
-          isFlashOn.value ? FlashMode.off : FlashMode.torch,
-        );
+        final newFlashMode = isFlashOn.value ? FlashMode.off : FlashMode.torch;
+        await cameraController!.setFlashMode(newFlashMode);
         isFlashOn.value = !isFlashOn.value;
       } catch (e) {
+        debugPrint('Failed to toggle flash: $e');
         Get.snackbar('Error', 'Failed to toggle flash: $e');
       }
     }
@@ -100,31 +122,31 @@ class ScanController extends GetxController {
 
   Future<void> captureImage() async {
     if (cameraController == null || !cameraController!.value.isInitialized) {
+      debugPrint('Camera not initialized');
       return;
     }
 
     try {
       isProcessing.value = true;
+      
       final image = await cameraController!.takePicture();
       
-      // Save to temporary directory (NOT adding to capturedImages yet)
       final tempDir = await getTemporaryDirectory();
       final fileName = 'scan_${DateTime.now().millisecondsSinceEpoch}.jpg';
       final savedPath = path.join(tempDir.path, fileName);
       
       final savedFile = await File(image.path).copy(savedPath);
       currentImage.value = savedFile;
-      // NOT adding to capturedImages here - will add only when user clicks Done
-      
+
       Get.snackbar('Success', 'Image captured successfully');
     } catch (e) {
+      debugPrint('Failed to capture image: $e');
       Get.snackbar('Error', 'Failed to capture image: $e');
     } finally {
       isProcessing.value = false;
     }
   }
 
-  // Confirm and save image (called when user clicks Done in editor)
   void confirmAndSaveImage(File imageFile) {
     if (!capturedImages.contains(imageFile)) {
       capturedImages.add(imageFile);
@@ -172,7 +194,6 @@ class ScanController extends GetxController {
     }
 
     try {
-      // Request storage permission (Android 12 and below)
       if (Platform.isAndroid) {
         final androidVersion = await _getAndroidVersion();
         if (androidVersion < 33) {
@@ -193,10 +214,9 @@ class ScanController extends GetxController {
 
   Future<int> _getAndroidVersion() async {
     try {
-      // This is a simplified version. For production, use device_info_plus package
-      return 33; // Assume Android 13+ for now
+      return 33;
     } catch (e) {
-      return 30; // Default to Android 11
+      return 30;
     }
   }
 
@@ -224,20 +244,17 @@ class ScanController extends GetxController {
     detectedLines.clear();
   }
 
-  // Process picked image from gallery
   Future<void> processPickedImage(String imagePath) async {
     try {
       isProcessing.value = true;
       
-      // Copy to app directory (temporary - not adding to capturedImages yet)
       final tempDir = await getTemporaryDirectory();
       final fileName = 'scan_${DateTime.now().millisecondsSinceEpoch}.jpg';
       final savedPath = path.join(tempDir.path, fileName);
       
       final savedFile = await File(imagePath).copy(savedPath);
       currentImage.value = savedFile;
-      // NOT adding to capturedImages - will add when user clicks Done in editor
-      
+
       Get.snackbar('Success', 'Image loaded successfully');
     } catch (e) {
       Get.snackbar('Error', 'Failed to load image: $e');
@@ -246,12 +263,10 @@ class ScanController extends GetxController {
     }
   }
 
-  // Add file from file picker directly to captured images
   Future<void> addFile(File file) async {
     try {
       isProcessing.value = true;
       
-      // Copy to app directory
       final tempDir = await getTemporaryDirectory();
       final fileExtension = path.extension(file.path);
       final fileName = 'import_${DateTime.now().millisecondsSinceEpoch}$fileExtension';
@@ -259,12 +274,11 @@ class ScanController extends GetxController {
       
       final savedFile = await file.copy(savedPath);
       
-      // Add to captured images
       if (!capturedImages.contains(savedFile)) {
         capturedImages.add(savedFile);
       }
       
-      Get.snackbar('Success', 'File added successfully');
+      // Get.snackbar('Success', 'File added successfully');
     } catch (e) {
       Get.snackbar('Error', 'Failed to add file: $e');
     } finally {
@@ -272,7 +286,6 @@ class ScanController extends GetxController {
     }
   }
 
-  // Share as PDF
   Future<void> shareAsPDF() async {
     if (currentImage.value == null) {
       Get.snackbar('Error', 'No image to share');
@@ -282,14 +295,11 @@ class ScanController extends GetxController {
     try {
       Get.snackbar('Processing', 'Creating PDF...');
       
-      // Create PDF
       final pdf = pw.Document();
       
-      // Read image bytes
       final imageBytes = await currentImage.value!.readAsBytes();
       final image = pw.MemoryImage(imageBytes);
       
-      // Add page with image
       pdf.addPage(
         pw.Page(
           pageFormat: PdfPageFormat.a4,
@@ -301,13 +311,11 @@ class ScanController extends GetxController {
         ),
       );
       
-      // Save PDF
       final tempDir = await getTemporaryDirectory();
       final pdfPath = path.join(tempDir.path, 'scan_${DateTime.now().millisecondsSinceEpoch}.pdf');
       final pdfFile = File(pdfPath);
       await pdfFile.writeAsBytes(await pdf.save());
       
-      // Share PDF
       await Share.shareXFiles(
         [XFile(pdfPath)],
         subject: 'Scanned Document',
@@ -320,7 +328,6 @@ class ScanController extends GetxController {
     }
   }
 
-  // Share as Long Image
   Future<void> shareAsLongImage() async {
     if (capturedImages.isEmpty) {
       Get.snackbar('Error', 'No images to share');
@@ -330,7 +337,6 @@ class ScanController extends GetxController {
     try {
       Get.snackbar('Processing', 'Creating long image...');
       
-      // Load all images
       List<img.Image> images = [];
       int totalHeight = 0;
       int maxWidth = 0;
@@ -352,23 +358,19 @@ class ScanController extends GetxController {
         return;
       }
       
-      // Create combined image
       final combinedImage = img.Image(width: maxWidth, height: totalHeight);
       
-      // Composite images vertically
       int currentY = 0;
       for (final image in images) {
         img.compositeImage(combinedImage, image, dstY: currentY);
         currentY += image.height;
       }
       
-      // Save combined image
       final tempDir = await getTemporaryDirectory();
       final longImagePath = path.join(tempDir.path, 'long_scan_${DateTime.now().millisecondsSinceEpoch}.jpg');
       final longImageFile = File(longImagePath);
       await longImageFile.writeAsBytes(img.encodeJpg(combinedImage));
       
-      // Share
       await Share.shareXFiles(
         [XFile(longImagePath)],
         subject: 'Scanned Document',

@@ -24,9 +24,7 @@ class HomeTab extends GetView<ScanController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.infoBlue.withValues(alpha: 0.01),
-      appBar: CommonAppBar(
-        title: AppTexts.appTitle,
-      ),
+      appBar: CommonAppBar(title: AppTexts.appTitle),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +60,7 @@ class HomeTab extends GetView<ScanController> {
                     horizontal: 10,
                     vertical: 10.h,
                   ),
-                  prefixIcon: Icon(Icons.search, color: AppColors.grey400),
+                  prefixIcon: Icon(Icons.search, color: AppColors.grey),
                 ),
               ),
             ),
@@ -140,63 +138,65 @@ class HomeTab extends GetView<ScanController> {
                 ),
               ],
             ),
-          Padding(
-            padding: EdgeInsets.all(AppDimensions.paddingMedium),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Spacing.height(AppDimensions.paddingSmall),
-                CommonText(
-                  text: AppTexts.recentS,
-                  fontSize: AppFontSizes.font14,
-                  fontWeight: AppFontWeights.bold,
-                  color: AppColors.blackColor,
-                ),
-                Spacing.height(AppDimensions.spacingXLarge),
-                Obx(() {
-                  if (controller.capturedImages.isEmpty) {
-                    return Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(AppDimensions.paddingXLarge),
-                        child: CommonText(
-                          text: AppTexts.noDocumentsFound,
-                          color: AppColors.grey400,
-                          fontSize: AppFontSizes.font16,
+            Padding(
+              padding: EdgeInsets.all(AppDimensions.paddingMedium),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Spacing.height(AppDimensions.paddingSmall),
+                  CommonText(
+                    text: AppTexts.recentS,
+                    fontSize: AppFontSizes.font14,
+                    fontWeight: AppFontWeights.bold,
+                    color: AppColors.blackColor,
+                  ),
+                  Spacing.height(AppDimensions.spacingXLarge),
+                  Obx(() {
+                    if (controller.capturedImages.isEmpty) {
+                      return Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(AppDimensions.paddingXLarge),
+                          child: CommonText(
+                            text: AppTexts.noDocumentsFound,
+                            color: AppColors.grey,
+                            fontSize: AppFontSizes.font16,
+                          ),
                         ),
-                      ),
-                    );
-                  }
+                      );
+                    }
 
-                  return RecentDocumentItemListView(
-                    images: controller.capturedImages,
-                    isGrid: false, // ListView
-                    titleBuilder: (index) {
-                      return 'M08 06, Doc ${index + 1}';
-                    },
-                    sizeBuilder: (image) {
-                      return AppConstants.getFileSize(image);
-                    },
-                    onTap: (image) {
-                      controller.currentImage.value = image;
-                      Get.toNamed(AppRoutes.documentEditor, arguments: {'selectedImage': image});
-                      return () {
-                        print("2222");
-                      };
-                    },
-                    onLongPress: (context, image, title) {
-                      _showContextMenu(context, image, title);
-                    },
-                  );
-                }),
-              ],
+                    return RecentDocumentItemListView(
+                      images: controller.capturedImages,
+                      isGrid: false, // ListView
+                      titleBuilder: (index) {
+                        return 'M08 06, Doc ${index + 1}';
+                      },
+                      sizeBuilder: (image) {
+                        return AppConstants.getFileSize(image);
+                      },
+                      onTap: (image) {
+                        controller.currentImage.value = image;
+                        Get.toNamed(
+                          AppRoutes.documentEditor,
+                          arguments: {'selectedImage': image},
+                        );
+                        return () {
+                          print("2222");
+                        };
+                      },
+                      onLongPress: (context, image, title) {
+                        _showContextMenu(context, image, title);
+                      },
+                    );
+                  }),
+                ],
+              ),
             ),
-          )
           ],
         ),
       ),
     );
   }
-
 
   void _showContextMenu(BuildContext context, File imageFile, String title) {
     showModalBottomSheet(
@@ -214,7 +214,6 @@ class HomeTab extends GetView<ScanController> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Rename Option
             ListTile(
               leading: const Icon(
                 Icons.edit_outlined,
@@ -228,15 +227,13 @@ class HomeTab extends GetView<ScanController> {
               trailing: Icon(
                 Icons.edit,
                 size: AppDimensions.iconSmall,
-                color: AppColors.grey400,
+                color: AppColors.grey,
               ),
               onTap: () {
                 Get.back();
                 _showRenameDialog(title);
               },
             ),
-
-            // Share Option
             ListTile(
               leading: const Icon(
                 Icons.share_outlined,
@@ -246,12 +243,11 @@ class HomeTab extends GetView<ScanController> {
                 text: AppTexts.share,
                 fontSize: AppFontSizes.font16,
                 color: AppColors.blackColor,
-
               ),
               trailing: Icon(
                 Icons.ios_share,
                 size: AppDimensions.iconSmall,
-                color: AppColors.grey400,
+                color: AppColors.grey,
               ),
               onTap: () {
                 Get.back();
@@ -260,8 +256,6 @@ class HomeTab extends GetView<ScanController> {
                 scanController.shareAsJPG();
               },
             ),
-
-            // Favourite Option
             ListTile(
               leading: const Icon(Icons.star_outline, color: AppColors.black87),
               title: CommonText(
@@ -272,15 +266,13 @@ class HomeTab extends GetView<ScanController> {
               trailing: Icon(
                 Icons.star_border,
                 size: AppDimensions.iconSmall,
-                color: AppColors.grey400,
+                color: AppColors.grey,
               ),
               onTap: () {
                 Get.back();
                 AppConstants.showCommonSnackBar(message: 'Added to favourites');
               },
             ),
-
-            // Delete Option (Red)
             ListTile(
               leading: const Icon(
                 Icons.delete_outline,
@@ -345,12 +337,23 @@ class HomeTab extends GetView<ScanController> {
   void _confirmDelete(File imageFile, String title) {
     Get.dialog(
       AlertDialog(
-        title: CommonText(text: AppTexts.deleteDocument),
-        content: CommonText(text: AppTexts.deleteConfirmMessage),
+        title: CommonText(
+          text: AppTexts.deleteDocument,
+          color: AppColors.blackColor,
+          fontSize: AppFontSizes.fontLarge,
+          fontWeight: AppFontWeights.extraBold,
+        ),
+        content: CommonText(
+          text: AppTexts.deleteConfirmMessage,
+          color: AppColors.blackColor,
+          fontSize: AppFontSizes.fontSmall,
+          fontWeight: AppFontWeights.normal,
+          softWrap: true,
+        ),
         actions: [
           TextButton(
             onPressed: () => Get.back(),
-            child: CommonText(text: AppTexts.cancel),
+            child: CommonText(text: AppTexts.cancel,color: AppColors.blackColor,fontSize: AppFontSizes.font14,fontWeight: AppFontWeights.normal),
           ),
           TextButton(
             onPressed: () {
@@ -365,11 +368,10 @@ class HomeTab extends GetView<ScanController> {
                 isError: true,
               );
             },
-            child: CommonText(text: AppTexts.delete, color: Colors.red),
+            child: CommonText(text: AppTexts.delete,color: AppColors.errorColor,fontSize: AppFontSizes.font14,fontWeight: AppFontWeights.normal),
           ),
         ],
       ),
     );
   }
-
 }

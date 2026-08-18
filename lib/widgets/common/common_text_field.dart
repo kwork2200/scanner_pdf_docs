@@ -116,7 +116,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
       onFieldSubmitted: widget.onSubmitted,
       focusNode: widget.focusNode,
       inputFormatters: widget.inputFormatters,
-      cursorColor: AppColors.primaryColor,
+      cursorColor: AppColors.infoBlue,
       style: widget.textStyle ??
           TextStyle(fontSize: AppFontSizes.font14, color: AppColors.blackColor),
       decoration: InputDecoration(
@@ -130,7 +130,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
               vertical: 10.h,
             ),
         filled: widget.filled ?? true,
-        fillColor: widget.fillColor ?? AppColors.primaryColor.withOpacity(0.05),
+        fillColor: widget.fillColor ?? AppColors.infoBlue.withOpacity(0.05),
         counterText: widget.counterText,
         border: widget.border ??
             OutlineInputBorder(
@@ -140,13 +140,13 @@ class _CommonTextFieldState extends State<CommonTextField> {
         enabledBorder: widget.enabledBorder ??
             OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
-              borderSide: BorderSide(color: AppColors.grey400),
+              borderSide: BorderSide(color: AppColors.grey),
             ),
         focusedBorder: widget.focusedBorder ??
             OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
               borderSide: BorderSide(
-                color: AppColors.primaryColor,
+                color: AppColors.infoBlue,
                 width: 1.5.w,
               ),
             ),
@@ -173,7 +173,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
               fontWeight: AppFontWeights.normal,
             ),
         labelStyle: TextStyle(
-          color: AppColors.primaryColor,
+          color: AppColors.infoBlue,
           fontSize: AppFontSizes.fontSmall,
         ),
         errorStyle: widget.errorStyle ??

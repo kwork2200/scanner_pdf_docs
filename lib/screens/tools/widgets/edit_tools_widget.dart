@@ -39,7 +39,7 @@ class EditToolsWidget extends GetView<ToolsController> {
           borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
           boxShadow: [
             BoxShadow(
-              color: AppColors.grey400.withOpacity(0.4),
+              color: AppColors.grey.withOpacity(0.4),
               blurRadius: 3,
               offset: const Offset(0, 1),
             ),

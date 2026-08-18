@@ -129,7 +129,7 @@ class PremiumScreen extends GetView<PremiumController> {
             onTap: () => Get.back(),
             child: Icon(
               Icons.close,
-              color: AppColors.grey400,
+              color: AppColors.grey,
               size: 28,
             ),
           ),

@@ -84,6 +84,9 @@ dependencies:
   # Package Info
   package_info_plus: ^8.1.2
 
+  # Shared Preferences
+  shared_preferences: ^2.3.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
