@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return GetMaterialApp(
-          title: 'PDF Scanner App',
+          title: 'PDF Viewer',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: AppColors.infoBlue),
             useMaterial3: true,

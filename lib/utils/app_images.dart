@@ -1,5 +1,6 @@
 class AppImages {
   static const String appLogo = 'assets/images/app_logo.png';
+  static const String pdfLogo = 'assets/images/pdf_logo.jpeg';
   static const String printerLottie = 'assets/lottie/Printer.json';
   static const String pdfLottie = 'assets/lottie/pdf.json';
   static const String placeholder = 'assets/images/placeholder.png';

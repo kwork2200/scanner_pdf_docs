@@ -82,7 +82,7 @@ class AccountController extends GetxController {
   }
 
   Future<void> openSupportEmail() async {
-    final email = 'support@fastscanapp.com';
+    final email = 'vaghasiyasanket36@gmail.com';
 
     try {
       final emailBody =
@@ -164,12 +164,12 @@ class AccountController extends GetxController {
         title: AppTexts.support,
         onTap: openSupportEmail,
       ),
-      AccountSettingsModel(
-        icon: Icons.copy_outlined,
-        title: AppTexts.copyUserId,
-        subtitle: userId,
-        onTap: copyUserId,
-      ),
+      // AccountSettingsModel(
+      //   icon: Icons.copy_outlined,
+      //   title: AppTexts.copyUserId,
+      //   subtitle: userId,
+      //   onTap: copyUserId,
+      // ),
       AccountSettingsModel(
         icon: Icons.lock_outline,
         title: AppTexts.appPin,
@@ -199,11 +199,12 @@ class AccountController extends GetxController {
         title: AppTexts.faq,
         onTap: openFaq,
       ),
-      AccountSettingsModel(
-        icon: Icons.rate_review_outlined,
-        title: AppTexts.rateApp,
-        onTap: rateApp,
-      ),
+      // Rate App - Commented for now
+      // AccountSettingsModel(
+      //   icon: Icons.rate_review_outlined,
+      //   title: AppTexts.rateApp,
+      //   onTap: rateApp,
+      // ),
       AccountSettingsModel(
         icon: Icons.share_outlined,
         title: AppTexts.shareApp,

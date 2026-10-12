@@ -45,14 +45,14 @@ class AccountScreen extends GetView<AccountController> {
             );
           }),
           Spacing.height(AppDimensions.spacingXLarge),
-          Center(
-            child: CommonText(
-              text: AppTexts.appVersion,
-              fontSize: AppFontSizes.fontSmall,
-              fontWeight: AppFontWeights.normal,
-              color: AppColors.grey,
-            ),
-          ),
+          // Center(
+          //   child: CommonText(
+          //     text: AppTexts.appVersion,
+          //     fontSize: AppFontSizes.fontSmall,
+          //     fontWeight: AppFontWeights.normal,
+          //     color: AppColors.grey,
+          //   ),
+          // ),
           Spacing.height(AppDimensions.spacingXLarge),
         ],
       ),

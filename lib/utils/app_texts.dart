@@ -1,11 +1,10 @@
 class AppTexts {
   // App Basics
-  static String get appTitle => 'Scanner PDF Docs';
-  static String get splashTitle => 'Document Scanner';
-  static String get scannerApp => 'Scanner App';
+  static String get appTitle => 'PDF Viewer';
+  static String get splashTitle => 'PDF Viewer';
+  static String get scannerApp => 'PDF Viewer';
   static String get splashSubtitle => 'Scan, Save & Share Documents';
-  static String get appVersion => 'Version 1.0.0';
-  
+
   // Common
   static String get submit => 'Submit';
   static String get cancel => 'Cancel';

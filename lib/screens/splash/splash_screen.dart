@@ -22,17 +22,37 @@ class SplashScreen extends GetView<SplashController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Lottie.asset(
-              AppImages.printerLottie,
-              width: 220.w,
-              height: 220.h,
-              fit: BoxFit.contain,
+            Container(
+              width: 180.w,
+              height: 180.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 20,
+                    spreadRadius: 5,
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.r),
+                child: Image.asset(AppImages.pdfLogo, fit: BoxFit.cover),
+              ),
             ),
+            SizedBox(height: 30.h),
             CommonText(
               text: AppTexts.appTitle,
-              fontSize: AppFontSizes.font22,
-              fontWeight: AppFontWeights.semiBold,
+              fontSize: AppFontSizes.fontXLarge,
+              fontWeight: AppFontWeights.bold,
               color: AppColors.blackColor,
+            ),
+            SizedBox(height: 8.h),
+            CommonText(
+              text: AppTexts.splashSubtitle,
+              fontSize: AppFontSizes.font14,
+              fontWeight: AppFontWeights.regular,
+              color: AppColors.infoBlue,
             ),
           ],
         ),
