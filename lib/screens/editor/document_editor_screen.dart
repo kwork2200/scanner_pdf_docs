@@ -12,6 +12,7 @@ import 'package:scanner_pdf_docs/utils/app_dimensions.dart';
 import 'package:scanner_pdf_docs/utils/app_font_sizes.dart';
 import 'package:scanner_pdf_docs/utils/app_font_weights.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text.dart';
+import 'package:scanner_pdf_docs/routes/app_routes.dart';
 
 class DocumentEditorScreen extends GetView<ScanController> {
   const DocumentEditorScreen({super.key});
@@ -69,23 +70,34 @@ class DocumentEditorScreen extends GetView<ScanController> {
                           final image = controller.capturedImages[index];
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(8),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 8,
-                                    offset: const Offset(2, 2),
+                            child: GestureDetector(
+                              onTap: () {
+                                Get.toNamed(
+                                  AppRoutes.proImageEditor,
+                                  arguments: {
+                                    'imageFile': image,
+                                    'imageIndex': index,
+                                  },
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(8),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 8,
+                                      offset: const Offset(2, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.file(
+                                    image,
+                                    fit: BoxFit.contain,
                                   ),
-                                ],
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.file(
-                                  image,
-                                  fit: BoxFit.contain,
                                 ),
                               ),
                             ),
@@ -152,23 +164,34 @@ class DocumentEditorScreen extends GetView<ScanController> {
                       flex: 1,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(8),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 8,
-                                offset: const Offset(2, 2),
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.toNamed(
+                              AppRoutes.proImageEditor,
+                              arguments: {
+                                'imageFile': controller.currentImage.value ?? controller.capturedImages.first,
+                                'imageIndex': 0,
+                              },
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 8,
+                                  offset: const Offset(2, 2),
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.file(
+                                controller.currentImage.value ?? controller.capturedImages.first,
+                                fit: BoxFit.contain,
                               ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.file(
-                              controller.currentImage.value ?? controller.capturedImages.first,
-                              fit: BoxFit.contain,
                             ),
                           ),
                         ),

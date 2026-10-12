@@ -8,6 +8,7 @@ class AppRoutes {
   static const batchScan = '/batch-scan';
   static const documentEditor = '/document-editor';
   static const imageEditor = '/image-editor';
+  static const proImageEditor = '/pro-image-editor';
   static const previewShare = '/preview-share';
   static const qrScanner = '/qr-scanner';
   static const idCardScanner = '/id-card-scanner';

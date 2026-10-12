@@ -162,7 +162,6 @@ class FilesTab extends GetView<ScanController> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Rename Option
             ListTile(
               leading: const Icon(
                 Icons.edit_outlined,
@@ -171,10 +170,11 @@ class FilesTab extends GetView<ScanController> {
               title: CommonText(
                 text: AppTexts.renameDocument,
                 fontSize: AppFontSizes.font16,
+                color: AppColors.blackColor,
               ),
               trailing: Icon(
                 Icons.edit,
-                size: AppDimensions.iconSmall,
+                size: AppDimensions.iconMedium,
                 color: AppColors.grey,
               ),
               onTap: () {
@@ -182,8 +182,6 @@ class FilesTab extends GetView<ScanController> {
                 _showRenameDialog(title);
               },
             ),
-
-            // Share Option
             ListTile(
               leading: const Icon(
                 Icons.share_outlined,
@@ -192,10 +190,11 @@ class FilesTab extends GetView<ScanController> {
               title: CommonText(
                 text: AppTexts.share,
                 fontSize: AppFontSizes.font16,
+                color: AppColors.blackColor,
               ),
               trailing: Icon(
                 Icons.ios_share,
-                size: AppDimensions.iconSmall,
+                size: AppDimensions.iconMedium,
                 color: AppColors.grey,
               ),
               onTap: () {
@@ -204,17 +203,16 @@ class FilesTab extends GetView<ScanController> {
                 controller.shareAsJPG();
               },
             ),
-
-            // Favourite Option
             ListTile(
               leading: const Icon(Icons.star_outline, color: AppColors.black87),
               title: CommonText(
                 text: AppTexts.favorites,
                 fontSize: AppFontSizes.font16,
+                color: AppColors.blackColor,
               ),
               trailing: Icon(
                 Icons.star_border,
-                size: AppDimensions.iconSmall,
+                size: AppDimensions.iconMedium,
                 color: AppColors.grey,
               ),
               onTap: () {
@@ -222,8 +220,6 @@ class FilesTab extends GetView<ScanController> {
                 AppConstants.showCommonSnackBar(message: 'Added to favourites');
               },
             ),
-
-            // Delete Option (Red)
             ListTile(
               leading: const Icon(
                 Icons.delete_outline,
@@ -236,7 +232,7 @@ class FilesTab extends GetView<ScanController> {
               ),
               trailing: Icon(
                 Icons.delete,
-                size: AppDimensions.iconSmall,
+                size: AppDimensions.iconMedium,
                 color: AppColors.redColor,
               ),
               onTap: () {

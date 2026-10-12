@@ -15,6 +15,7 @@ import 'package:scanner_pdf_docs/screens/gallery/gallery_screen.dart';
 import 'package:scanner_pdf_docs/screens/editor/editor_binding.dart';
 import 'package:scanner_pdf_docs/screens/editor/camera_scan_screen.dart';
 import 'package:scanner_pdf_docs/screens/editor/image_editor_screen.dart';
+import 'package:scanner_pdf_docs/screens/editor/pro_image_editor_screen.dart';
 import 'package:scanner_pdf_docs/screens/editor/document_editor_screen.dart';
 import 'package:scanner_pdf_docs/screens/editor/preview_share_screen.dart';
 import 'package:scanner_pdf_docs/screens/qr_scanner/qr_scanner_screen.dart';
@@ -96,6 +97,17 @@ class AppPages {
       page: () {
         final args = Get.arguments as Map<String, dynamic>?;
         return ImageEditorScreen(imageFile: args?['imageFile'] as File?);
+      },
+      binding: EditorBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.proImageEditor,
+      page: () {
+        final args = Get.arguments as Map<String, dynamic>?;
+        return ProImageEditorScreen(
+          imageFile: args?['imageFile'] as File,
+          imageIndex: args?['imageIndex'] as int? ?? 0,
+        );
       },
       binding: EditorBinding(),
     ),
