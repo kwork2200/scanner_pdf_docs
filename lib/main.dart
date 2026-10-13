@@ -6,9 +6,21 @@ import 'package:scanner_pdf_docs/routes/app_routes.dart';
 import 'package:scanner_pdf_docs/screens/splash/splash_binding.dart';
 import 'package:scanner_pdf_docs/services/app_lifecycle_service.dart';
 import 'package:scanner_pdf_docs/utils/app_colors.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Initialize Google Mobile Ads
+  await MobileAds.instance.initialize();
+  print('✅ Google Mobile Ads initialized');
   
   // Initialize AppLifecycleService
   Get.put(AppLifecycleService(), permanent: true);

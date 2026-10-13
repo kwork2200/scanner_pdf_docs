@@ -7,6 +7,13 @@ allprojects {
 
 buildscript {
 //    ext.kotlin_version = "2.1.20"
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.google.gms:google-services:4.4.2")
+    }
 }
 
 val newBuildDir: Directory =
