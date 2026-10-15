@@ -11,119 +11,122 @@ import 'package:scanner_pdf_docs/utils/app_texts.dart';
 import 'package:scanner_pdf_docs/utils/spacing_widget.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_app_bar.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text.dart';
+import 'package:scanner_pdf_docs/widgets/common/ad_on_back_wrapper.dart';
 
 class ContactUsScreen extends StatelessWidget {
   const ContactUsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(
-        title: AppTexts.contactUs,
+    return AdOnBackWrapper(
+      child: Scaffold(
         backgroundColor: AppColors.whiteColor,
-        showProBadge: false,
-        leading: InkWell(
-          onTap: () => Get.back(),
-          child: Icon(
-            Icons.arrow_back_ios_new_outlined,
-            color: AppColors.infoBlue,
-            size: 20.sp,
+        appBar: CommonAppBar(
+          title: AppTexts.contactUs,
+          backgroundColor: AppColors.whiteColor,
+          showProBadge: false,
+          leading: InkWell(
+            onTap: () => handleBackWithAd(context),
+            child: Icon(
+              Icons.arrow_back_ios_new_outlined,
+              color: AppColors.infoBlue,
+              size: 20.sp,
+            ),
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(AppDimensions.paddingMedium),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Spacing.height(AppDimensions.spacingMedium),
-            Center(
-              child: Icon(
-                Icons.contact_support_outlined,
-                size: 80.sp,
-                color: AppColors.infoBlue,
+        body: SingleChildScrollView(
+          padding: EdgeInsets.all(AppDimensions.paddingMedium),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Spacing.height(AppDimensions.spacingMedium),
+              Center(
+                child: Icon(
+                  Icons.contact_support_outlined,
+                  size: 80.sp,
+                  color: AppColors.infoBlue,
+                ),
               ),
-            ),
-            Spacing.height(AppDimensions.spacingLarge),
-            Center(
-              child: CommonText(
-                text: 'Get in Touch',
-                fontSize: AppFontSizes.fontXLarge,
-                fontWeight: AppFontWeights.bold,
-                color: AppColors.blackColor,
+              Spacing.height(AppDimensions.spacingLarge),
+              Center(
+                child: CommonText(
+                  text: 'Get in Touch',
+                  fontSize: AppFontSizes.fontXLarge,
+                  fontWeight: AppFontWeights.bold,
+                  color: AppColors.blackColor,
+                ),
               ),
-            ),
-            Spacing.height(AppDimensions.spacingSmall),
-            Center(
-              child: CommonText(
-                text: 'We\'d love to hear from you!\nFeel free to reach out for any questions or support.',
-                fontSize: AppFontSizes.fontSmall,
-                fontWeight: AppFontWeights.normal,
-                color: AppColors.grey,
-                textAlign: TextAlign.center,
+              Spacing.height(AppDimensions.spacingSmall),
+              Center(
+                child: CommonText(
+                  text: 'We\'d love to hear from you!\nFeel free to reach out for any questions or support.',
+                  fontSize: AppFontSizes.fontSmall,
+                  fontWeight: AppFontWeights.normal,
+                  color: AppColors.grey,
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-            Spacing.height(AppDimensions.spacingXLarge),
-            _buildContactCard(
-              icon: Icons.email_outlined,
-              title: 'Email',
-              value: 'vaghasiyasanket36@gmail.com',
-              onTap: () => _launchEmail(),
-              onLongPress: () => _copyToClipboard(
-                'vaghasiyasanket36@gmail.com',
-                'Email copied to clipboard',
+              Spacing.height(AppDimensions.spacingXLarge),
+              _buildContactCard(
+                icon: Icons.email_outlined,
+                title: 'Email',
+                value: 'vaghasiyasanket36@gmail.com',
+                onTap: () => _launchEmail(),
+                onLongPress: () => _copyToClipboard(
+                  'vaghasiyasanket36@gmail.com',
+                  'Email copied to clipboard',
+                ),
               ),
-            ),
-            Spacing.height(AppDimensions.spacingMedium),
-            _buildContactCard(
-              icon: Icons.phone_outlined,
-              title: 'Phone',
-              value: '+91 97260 30303',
-              onTap: () => _launchPhone(),
-              onLongPress: () => _copyToClipboard(
-                '+91 97260 30303',
-                'Phone number copied to clipboard',
+              Spacing.height(AppDimensions.spacingMedium),
+              _buildContactCard(
+                icon: Icons.phone_outlined,
+                title: 'Phone',
+                value: '+91 97260 30303',
+                onTap: () => _launchPhone(),
+                onLongPress: () => _copyToClipboard(
+                  '+91 97260 30303',
+                  'Phone number copied to clipboard',
+                ),
               ),
-            ),
-            Spacing.height(AppDimensions.spacingXLarge),
-            Container(
-              padding: EdgeInsets.all(AppDimensions.paddingMedium),
-              decoration: BoxDecoration(
-                color: AppColors.infoBlue.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12.r),
+              Spacing.height(AppDimensions.spacingXLarge),
+              Container(
+                padding: EdgeInsets.all(AppDimensions.paddingMedium),
+                decoration: BoxDecoration(
+                  color: AppColors.infoBlue.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.info_outline,
+                          color: AppColors.infoBlue,
+                          size: 20.sp,
+                        ),
+                        Spacing.width(AppDimensions.spacingSmall),
+                        CommonText(
+                          text: 'Support Hours',
+                          fontSize: AppFontSizes.fontSmall,
+                          fontWeight: AppFontWeights.semiBold,
+                          color: AppColors.blackColor,
+                        ),
+                      ],
+                    ),
+                    Spacing.height(AppDimensions.spacingSmall),
+                    CommonText(
+                      text: 'Monday - Friday: 9:00 AM - 6:00 PM (IST)\nSaturday: 10:00 AM - 4:00 PM (IST)\nSunday: Closed',
+                      fontSize: AppFontSizes.fontSmall,
+                      fontWeight: AppFontWeights.normal,
+                      color: AppColors.grey,
+                    ),
+                  ],
+                ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: AppColors.infoBlue,
-                        size: 20.sp,
-                      ),
-                      Spacing.width(AppDimensions.spacingSmall),
-                      CommonText(
-                        text: 'Support Hours',
-                        fontSize: AppFontSizes.fontSmall,
-                        fontWeight: AppFontWeights.semiBold,
-                        color: AppColors.blackColor,
-                      ),
-                    ],
-                  ),
-                  Spacing.height(AppDimensions.spacingSmall),
-                  CommonText(
-                    text: 'Monday - Friday: 9:00 AM - 6:00 PM (IST)\nSaturday: 10:00 AM - 4:00 PM (IST)\nSunday: Closed',
-                    fontSize: AppFontSizes.fontSmall,
-                    fontWeight: AppFontWeights.normal,
-                    color: AppColors.grey,
-                  ),
-                ],
-              ),
-            ),
-            Spacing.height(AppDimensions.spacingMedium),
-          ],
+              Spacing.height(AppDimensions.spacingMedium),
+            ],
+          ),
         ),
       ),
     );

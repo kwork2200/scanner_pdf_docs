@@ -9,26 +9,48 @@ import 'package:scanner_pdf_docs/utils/app_font_sizes.dart';
 import 'package:scanner_pdf_docs/utils/app_font_weights.dart';
 import 'package:scanner_pdf_docs/utils/spacing_widget.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text.dart';
+import 'package:scanner_pdf_docs/widgets/components/ads/hybrid_native_ad_widget.dart';
+import 'package:scanner_pdf_docs/utils/functions.dart';
 
 class EditToolsWidget extends GetView<ToolsController> {
   const EditToolsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 2,
+    return ListView(
       padding: EdgeInsets.all(AppDimensions.paddingSmall),
-      mainAxisSpacing: AppDimensions.spacingMedium,
-      crossAxisSpacing: AppDimensions.spacingXLarge + 0.h,
-      childAspectRatio: 1.2,
-      children: controller.editTools.map((tool) => _buildGridToolItem(tool)).toList(),
+      children: [
+        GridView.count(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: 2,
+          mainAxisSpacing: AppDimensions.spacingMedium,
+          crossAxisSpacing: AppDimensions.spacingXLarge + 0.h,
+          childAspectRatio: 1.2,
+          children: controller.editTools.map((tool) => _buildGridToolItem(tool)).toList(),
+        ),
+        Spacing.height(AppDimensions.spacingMedium),
+        HybridNativeAdWidget(
+          height: 80,
+          smallHeight: 100,
+          adKey: 'edit_tools_ad_1',
+          margin: EdgeInsets.symmetric(vertical: AppDimensions.spacingSmall),
+        ),
+        // Add bottom padding for better spacing
+        SizedBox(height: 80.h),
+      ],
     );
   }
 
   Widget _buildGridToolItem(EditToolModel tool) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         if (tool.route != null) {
+          // Show interstitial ad before navigation
+          final context = Get.context;
+          if (context != null) {
+            await showManagedInterstitialAd(context);
+          }
           Get.toNamed(tool.route!);
         }
       },

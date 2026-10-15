@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:scanner_pdf_docs/ads/app_open_ad_manager.dart';
 import 'package:scanner_pdf_docs/routes/app_pages.dart';
 import 'package:scanner_pdf_docs/routes/app_routes.dart';
 import 'package:scanner_pdf_docs/screens/splash/splash_binding.dart';
 import 'package:scanner_pdf_docs/services/app_lifecycle_service.dart';
+import 'package:scanner_pdf_docs/services/remote_config_service.dart';
 import 'package:scanner_pdf_docs/utils/app_colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -21,8 +23,12 @@ void main() async {
   // Initialize Google Mobile Ads
   await MobileAds.instance.initialize();
   print('✅ Google Mobile Ads initialized');
-  
-  // Initialize AppLifecycleService
+
+  // Preload App Open Ad immediately after AdMob initialization
+  print('🔄 Preloading App Open Ad at app startup...');
+  AppOpenAdManager.instance.loadAd();
+
+  await RemoteConfigService.instance.initialize();
   Get.put(AppLifecycleService(), permanent: true);
   
   runApp(const MyApp());

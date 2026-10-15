@@ -8,6 +8,7 @@ import 'package:scanner_pdf_docs/utils/app_font_sizes.dart';
 import 'package:scanner_pdf_docs/utils/app_font_weights.dart';
 import 'package:scanner_pdf_docs/utils/spacing_widget.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text.dart';
+import 'package:scanner_pdf_docs/widgets/components/ads/hybrid_native_ad_widget.dart';
 
 class RecentDocumentItemListView extends StatelessWidget {
   final List<File> images;
@@ -54,16 +55,56 @@ class RecentDocumentItemListView extends StatelessWidget {
   }
 
   Widget _buildListView(BuildContext context) {
-    return ListView.separated(
+    return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: images.length,
-      separatorBuilder: (_, __) => Spacing.height(AppDimensions.spacingLarge),
+      itemCount: _getListItemCount(),
       itemBuilder: (context, index) {
-        return _buildItem(context, index);
+        return _buildListItem(context, index);
       },
     );
   }
+
+  int _getListItemCount() {
+    int imageCount = images.length;
+    int adCount = imageCount ~/ 2; // Add ad after every 2 items
+    return imageCount + adCount;
+  }
+
+
+  Widget _buildListItem(BuildContext context, int index) {
+    final int adsBefore = index ~/ 3;
+    final int imageIndex = index - adsBefore;
+    final bool isAdPosition = (index + 1) % 3 == 0;
+
+    if (isAdPosition && imageIndex < images.length) {
+      return Padding(
+        padding: EdgeInsets.only(bottom: 10),
+        child: HybridNativeAdWidget(
+          height: 60,
+          smallHeight: 60,
+          adKey: 'recent_docs_ad_${adsBefore + 1}',
+          margin: EdgeInsets.zero,
+        ),
+      );
+    }
+
+    // Document item
+    if (imageIndex < images.length) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildItem(context, imageIndex),
+          if (index < _getListItemCount() - 1 &&
+              !((index + 2) % 3 == 0))
+            Spacing.height(AppDimensions.spacingLarge),
+        ],
+      );
+    }
+
+    return const SizedBox.shrink();
+  }
+
 
   Widget _buildItem(BuildContext context, int index) {
     final image = images[index];

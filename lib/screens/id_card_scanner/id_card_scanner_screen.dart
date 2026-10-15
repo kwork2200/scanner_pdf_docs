@@ -10,20 +10,22 @@ import 'package:scanner_pdf_docs/utils/app_font_weights.dart';
 import 'package:scanner_pdf_docs/utils/app_texts.dart';
 import 'package:scanner_pdf_docs/utils/spacing_widget.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text.dart';
+import 'package:scanner_pdf_docs/widgets/common/ad_on_back_wrapper.dart';
 
 class IdCardScannerScreen extends GetView<IdCardScannerController> {
   const IdCardScannerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.blackColor,
-      appBar: AppBar(
+    return AdOnBackWrapper(
+      child: Scaffold(
         backgroundColor: AppColors.blackColor,
-        leading: IconButton(
-          icon: const Icon(Icons.close, color: AppColors.backgroundColor),
-          onPressed: () => Get.back(),
-        ),
+        appBar: AppBar(
+          backgroundColor: AppColors.blackColor,
+          leading: IconButton(
+            icon: const Icon(Icons.close, color: AppColors.backgroundColor),
+            onPressed: () => handleBackWithAd(context),
+          ),
         title: CommonText(
           text: AppTexts.scanIdCard,
           color: AppColors.backgroundColor,
@@ -53,6 +55,7 @@ class IdCardScannerScreen extends GetView<IdCardScannerController> {
             return _buildCameraView();
           });
         },
+      ),
       ),
     );
   }

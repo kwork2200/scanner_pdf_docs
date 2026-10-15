@@ -10,6 +10,7 @@ import 'package:scanner_pdf_docs/utils/app_texts.dart';
 import 'package:scanner_pdf_docs/utils/app_colors.dart';
 import 'package:scanner_pdf_docs/utils/app_dimensions.dart';
 import 'package:scanner_pdf_docs/widgets/sheets/scan_bottom_sheet.dart';
+import 'package:scanner_pdf_docs/widgets/components/ads/hybrid_banner_ad_widget.dart';
 
 class BottomNavBrScreen extends GetView<BottomNavBarController> {
    BottomNavBrScreen({super.key});
@@ -29,25 +30,34 @@ class BottomNavBrScreen extends GetView<BottomNavBarController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() => _tabs[controller.currentIndex.value]),
-      bottomNavigationBar:Obx(() {
-        return  BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          selectedLabelStyle: TextStyle(fontWeight: AppFontWeights.bold),
-          unselectedLabelStyle: TextStyle(fontWeight: AppFontWeights.bold),
-          currentIndex: controller.currentIndex.value,
-          onTap: (index) {
-            controller.changeTab(index);
-          },
-          selectedItemColor: AppColors.infoBlue,
-          unselectedItemColor: AppColors.grey,
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: AppTexts.navHome),
-            BottomNavigationBarItem(icon: Icon(Icons.folder), label: AppTexts.files),
-            BottomNavigationBarItem(icon: Icon(Icons.widgets_outlined), label: AppTexts.tools),
-            BottomNavigationBarItem(icon: Icon(Icons.person_rounded), label: AppTexts.account),
-          ],
-        );
-      },),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Obx(() {
+            return BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              selectedLabelStyle: TextStyle(fontWeight: AppFontWeights.bold),
+              unselectedLabelStyle: TextStyle(fontWeight: AppFontWeights.bold),
+              currentIndex: controller.currentIndex.value,
+              onTap: (index) {
+                controller.changeTab(index);
+              },
+              selectedItemColor: AppColors.infoBlue,
+              unselectedItemColor: AppColors.grey,
+              items: [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: AppTexts.navHome),
+                BottomNavigationBarItem(icon: Icon(Icons.folder), label: AppTexts.files),
+                BottomNavigationBarItem(icon: Icon(Icons.widgets_outlined), label: AppTexts.tools),
+                BottomNavigationBarItem(icon: Icon(Icons.person_rounded), label: AppTexts.account),
+              ],
+            );
+          }),
+          const SafeArea(
+            top: false,
+            child: HybridBannerAdWidget(),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showScanBottomSheet(context),
         backgroundColor: AppColors.infoBlue,

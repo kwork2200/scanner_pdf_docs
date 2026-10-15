@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scanner_pdf_docs/screens/scan/scan_controller.dart';
-import 'package:scanner_pdf_docs/screens/editor/document_editor_screen.dart';
 import 'package:scanner_pdf_docs/routes/app_routes.dart';
 import 'package:scanner_pdf_docs/utils/app_texts.dart';
 import 'package:scanner_pdf_docs/utils/spacing_widget.dart';
@@ -13,6 +12,8 @@ import 'package:scanner_pdf_docs/utils/app_font_weights.dart';
 import 'package:scanner_pdf_docs/utils/app_constants.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_app_bar.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text.dart';
+import 'package:scanner_pdf_docs/widgets/components/ads/hybrid_native_ad_widget.dart';
+import 'package:scanner_pdf_docs/utils/functions.dart';
 
 class FilesTab extends GetView<ScanController> {
   const FilesTab({super.key});
@@ -43,97 +44,20 @@ class FilesTab extends GetView<ScanController> {
           );
         }
 
-        return GridView.builder(
-          padding: EdgeInsets.all(AppDimensions.paddingSmall),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 4,
-            mainAxisSpacing: 10,
-            childAspectRatio: 0.8,
-          ),
-          itemCount: controller.capturedImages.length,
-          itemBuilder: (context, index) {
-            final image = controller.capturedImages[index];
-            final fileSize = _getFileSize(image);
-            final fileName = 'Document ${index + 1}';
-
-            return InkWell(
-              onTap: () {
-                controller.currentImage.value = image;
-                Get.toNamed(AppRoutes.documentEditor, arguments: {'selectedImage': image});
-              },
-              onLongPress: () {
-                _showContextMenu(context, image, fileName, index);
-              },
-              child: Card(
-                elevation: 2,
-                color: AppColors.backgroundColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                    AppDimensions.radiusSmall,
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(AppDimensions.radiusSmall),
-                            topRight: Radius.circular(
-                              AppDimensions.radiusSmall,
-                            ),
-                          ),
-                          color: AppColors.grey300,
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(AppDimensions.radiusSmall),
-                            topRight: Radius.circular(
-                              AppDimensions.radiusSmall,
-                            ),
-                          ),
-                          child: Image.file(
-                            image,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Icon(
-                                Icons.image,
-                                color: AppColors.grey,
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(AppDimensions.paddingSmall),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CommonText(
-                            text: fileName,
-                            fontSize: AppFontSizes.fontNeNoSmall,
-                            fontWeight: AppFontWeights.medium,
-                            color: AppColors.blackColor,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          CommonText(
-                            text: fileSize,
-                            fontSize: AppFontSizes.fontNeNoSmall,
-                            color: AppColors.grey,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+        return CustomScrollView(
+          slivers: [
+            SliverPadding(
+              padding: EdgeInsets.all(AppDimensions.paddingSmall),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return _buildListItemWithAds(context, index);
+                  },
+                  childCount: _getItemCountWithAds(controller.capturedImages.length),
                 ),
               ),
-            );
-          },
+            ),
+          ],
         );
       }),
     );
@@ -322,5 +246,173 @@ class FilesTab extends GetView<ScanController> {
     } catch (e) {
       return '0 KB';
     }
+  }
+
+  // Calculate total items including ad rows
+  int _getItemCountWithAds(int imageCount) {
+    if (imageCount == 0) return 0;
+    
+    int fullRows = imageCount ~/ 3; // Complete rows of 3 docs
+    int remainder = imageCount % 3; // Remaining docs
+    
+    // One row per 3 docs + one ad row after each 3 docs
+    int totalRows = fullRows * 2; // Each group of 3 docs = 1 grid row + 1 ad row
+    
+    if (remainder > 0) {
+      totalRows += 1; // Add one more grid row for remaining docs
+    }
+    
+    return totalRows;
+  }
+
+  // Build grid rows and ad rows
+  Widget _buildListItemWithAds(BuildContext context, int rowIndex) {
+    final controller = Get.find<ScanController>();
+    
+    // Determine if this row is an ad row or grid row
+    // Pattern: grid, ad, grid, ad, grid, ad...
+    final bool isAdRow = rowIndex % 2 == 1; // Odd indices are ad rows
+    
+    if (isAdRow) {
+      // Ad row - full width native ad
+      final adNumber = (rowIndex ~/ 2) + 1;
+      return Padding(
+        padding: EdgeInsets.only(bottom: 10),
+        child: HybridNativeAdWidget(
+          height: 120,
+          smallHeight: 80,
+          adKey: 'files_tab_ad_$adNumber',
+          margin: EdgeInsets.zero,
+        ),
+      );
+    }
+    
+    // Grid row - show 3 documents
+    final gridRowNumber = rowIndex ~/ 2;
+    final startIndex = gridRowNumber * 3;
+    
+    if (startIndex >= controller.capturedImages.length) {
+      return const SizedBox.shrink();
+    }
+    
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(3, (colIndex) {
+          final imageIndex = startIndex + colIndex;
+          
+          if (imageIndex >= controller.capturedImages.length) {
+            return Expanded(child: SizedBox.shrink());
+          }
+          
+          final image = controller.capturedImages[imageIndex];
+          final fileSize = _getFileSize(image);
+          final fileName = 'Document ${imageIndex + 1}';
+          
+          return Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(
+                right: colIndex < 2 ? 4 : 0,
+              ),
+              child: _buildDocumentCard(
+                context,
+                image,
+                fileName,
+                fileSize,
+                imageIndex,
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
+  Widget _buildDocumentCard(
+    BuildContext context,
+    File image,
+    String fileName,
+    String fileSize,
+    int imageIndex,
+  ) {
+    final controller = Get.find<ScanController>();
+    
+    return InkWell(
+      onTap: () async {
+        // Show ad before opening document editor
+        await showManagedInterstitialAd(context);
+        
+        controller.currentImage.value = image;
+        Get.toNamed(AppRoutes.documentEditor, arguments: {'selectedImage': image});
+      },
+      onLongPress: () {
+        _showContextMenu(context, image, fileName, imageIndex);
+      },
+      child: Card(
+        elevation: 2,
+        color: AppColors.backgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            AppDimensions.radiusSmall,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AspectRatio(
+              aspectRatio: 1,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(AppDimensions.radiusSmall),
+                    topRight: Radius.circular(AppDimensions.radiusSmall),
+                  ),
+                  color: AppColors.grey300,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(AppDimensions.radiusSmall),
+                    topRight: Radius.circular(AppDimensions.radiusSmall),
+                  ),
+                  child: Image.file(
+                    image,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(
+                        Icons.image,
+                        color: AppColors.grey,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(AppDimensions.paddingSmall),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CommonText(
+                    text: fileName,
+                    fontSize: AppFontSizes.fontNeNoSmall,
+                    fontWeight: AppFontWeights.medium,
+                    color: AppColors.blackColor,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  CommonText(
+                    text: fileSize,
+                    fontSize: AppFontSizes.fontNeNoSmall,
+                    color: AppColors.grey,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

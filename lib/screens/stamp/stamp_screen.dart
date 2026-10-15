@@ -12,28 +12,32 @@ import 'package:scanner_pdf_docs/utils/app_font_sizes.dart';
 import 'package:scanner_pdf_docs/utils/app_font_weights.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text_field.dart';
+import 'package:scanner_pdf_docs/widgets/common/ad_on_back_wrapper.dart';
+import 'package:scanner_pdf_docs/widgets/components/ads/hybrid_native_ad_widget.dart';
+import 'package:scanner_pdf_docs/utils/functions.dart';
 
 class StampScreen extends GetView<StampController> {
   const StampScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
+    return AdOnBackWrapper(
+      child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
-        foregroundColor: AppColors.backgroundColor,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.blackColor),
-          onPressed: () => Get.back(),
+        appBar: AppBar(
+          backgroundColor: AppColors.backgroundColor,
+          foregroundColor: AppColors.backgroundColor,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: AppColors.blackColor),
+            onPressed: () => handleBackWithAd(context),
+          ),
+          title: CommonText(
+            text: 'Stamp',
+            fontSize: AppFontSizes.font16,
+            fontWeight: AppFontWeights.semiBold,
+            color: AppColors.blackColor,
+          ),
         ),
-        title: CommonText(
-          text: 'Stamp',
-          fontSize: AppFontSizes.font16,
-          fontWeight: AppFontWeights.semiBold,
-          color: AppColors.blackColor,
-        ),
-      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,12 +119,22 @@ class StampScreen extends GetView<StampController> {
                       onLongPress: (context, image, title) {},
                     );
                   }),
+                  Spacing.height(AppDimensions.spacingMedium),
                 ],
               ),
             ),
+            // Add bottom padding to account for the ad banner
+            SizedBox(height: 160.h),
           ],
         ),
       ),
-    );
+      bottomNavigationBar: HybridNativeAdWidget(
+        height: 150,
+        smallHeight: 80,
+        adKey: 'stamp_screen_bottom_ad',
+        margin: EdgeInsets.zero,
+        padding: EdgeInsets.zero,
+      ),
+    ));
   }
 }

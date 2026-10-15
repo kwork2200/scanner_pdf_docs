@@ -11,6 +11,8 @@ import 'package:scanner_pdf_docs/utils/app_constants.dart';
 import 'package:scanner_pdf_docs/utils/app_dimensions.dart';
 import 'package:scanner_pdf_docs/utils/app_texts.dart';
 import 'package:scanner_pdf_docs/routes/app_routes.dart';
+import 'package:scanner_pdf_docs/utils/functions.dart';
+import 'package:scanner_pdf_docs/widgets/components/ads/interstitial_ad_manager.dart';
 
 class AccountController extends GetxController {
   final String userId = 'd71e5b7252153f07d64ec137f1fae316';
@@ -37,6 +39,33 @@ class AccountController extends GetxController {
 
   late final List<AccountSettingsModel> settingsItems;
 
+  /// Helper method to ensure ad is loaded and ready before showing
+  /// If ad is not ready, it will wait up to 3 seconds for it to load
+  Future<void> _showInterstitialAdAndWait(BuildContext context) async {
+    try {
+      if (InterstitialAdManager.instance.isAdReady) {
+        await showManagedInterstitialAd(context);
+        return;
+      }
+
+      debugPrint('🔄 Ad not ready, loading and waiting...');
+      await InterstitialAdManager.instance.loadAd();
+      for (int i = 0; i < 6; i++) {
+        await Future.delayed(const Duration(milliseconds: 500));
+        if (InterstitialAdManager.instance.isAdReady) {
+          debugPrint('✅ Ad loaded after ${(i + 1) * 500}ms, showing...');
+          await showManagedInterstitialAd(context);
+          return;
+        }
+      }
+      
+      debugPrint('⚠️ Ad not ready after 3s, proceeding...');
+      await showManagedInterstitialAd(context);
+    } catch (e) {
+      debugPrint('❌ Error in _showInterstitialAdAndWait: $e');
+    }
+  }
+
   void copyUserId() {
     Clipboard.setData(ClipboardData(text: userId));
     Get.snackbar(
@@ -50,31 +79,83 @@ class AccountController extends GetxController {
   }
 
   Future<void> shareApp() async {
+    final context = Get.context;
+    if (context != null) {
+      await _showInterstitialAdAndWait(context);
+    }
     await AppConstants.shareApp();
   }
 
   Future<void> rateApp() async {
+    final context = Get.context;
+    if (context != null) {
+      await _showInterstitialAdAndWait(context);
+    }
     await AppConstants.rateApp();
   }
 
   Future<void> openContactUs() async {
+    final context = Get.context;
+    if (context != null) {
+      await _showInterstitialAdAndWait(context);
+    }
     Get.toNamed(AppRoutes.contactUs);
   }
 
   Future<void> openPrivacyPolicy() async {
+    final context = Get.context;
+    if (context != null) {
+      await _showInterstitialAdAndWait(context);
+    }
     Get.toNamed(AppRoutes.privacyPolicy);
   }
 
   Future<void> openTermsConditions() async {
+    final context = Get.context;
+    if (context != null) {
+      await _showInterstitialAdAndWait(context);
+    }
     Get.toNamed(AppRoutes.termsConditions);
   }
 
   Future<void> openFaq() async {
+    final context = Get.context;
+    if (context != null) {
+      await _showInterstitialAdAndWait(context);
+    }
     Get.toNamed(AppRoutes.faq);
   }
 
   Future<void> openPremium() async {
+    final context = Get.context;
+    if (context != null) {
+      await _showInterstitialAdAndWait(context);
+    }
     await AppConstants.showPremiumScreen();
+  }
+
+  Future<void> openAppPin() async {
+    final context = Get.context;
+    if (context != null) {
+      await _showInterstitialAdAndWait(context);
+    }
+    Get.toNamed(AppRoutes.appPin);
+  }
+
+  Future<void> openStartAppWith() async {
+    final context = Get.context;
+    if (context != null) {
+      await _showInterstitialAdAndWait(context);
+    }
+    Get.toNamed(AppRoutes.startAppWith);
+  }
+
+  Future<void> openPictureQuality() async {
+    final context = Get.context;
+    if (context != null) {
+      await _showInterstitialAdAndWait(context);
+    }
+    Get.toNamed(AppRoutes.pictureQuality);
   }
 
   Future<void> initAppVersion() async {
@@ -82,6 +163,11 @@ class AccountController extends GetxController {
   }
 
   Future<void> openSupportEmail() async {
+    final context = Get.context;
+    if (context != null) {
+      await _showInterstitialAdAndWait(context);
+    }
+    
     final email = 'vaghasiyasanket36@gmail.com';
 
     try {
@@ -157,6 +243,10 @@ class AccountController extends GetxController {
     }
 
     initAppVersion();
+    
+    // Preload interstitial ad when AccountScreen opens
+    debugPrint('🔄 Preloading interstitial ad for AccountScreen');
+    InterstitialAdManager.instance.loadAd();
 
     settingsItems = [
       AccountSettingsModel(
@@ -173,7 +263,7 @@ class AccountController extends GetxController {
       AccountSettingsModel(
         icon: Icons.lock_outline,
         title: AppTexts.appPin,
-        onTap: () => Get.toNamed(AppRoutes.appPin),
+        onTap: openAppPin,
       ),
       AccountSettingsModel(
         icon: Icons.star_outline,
@@ -187,12 +277,12 @@ class AccountController extends GetxController {
       AccountSettingsModel(
         icon: Icons.open_in_new_outlined,
         title: AppTexts.startAppWith,
-        onTap: () => Get.toNamed(AppRoutes.startAppWith),
+        onTap: openStartAppWith,
       ),
       AccountSettingsModel(
         icon: Icons.photo_outlined,
         title: AppTexts.pictureQuality,
-        onTap: () => Get.toNamed(AppRoutes.pictureQuality),
+        onTap: openPictureQuality,
       ),
       AccountSettingsModel(
         icon: Icons.help_outline,

@@ -12,116 +12,140 @@ import 'package:scanner_pdf_docs/utils/app_font_sizes.dart';
 import 'package:scanner_pdf_docs/utils/app_font_weights.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text_field.dart';
+import 'package:scanner_pdf_docs/widgets/common/ad_on_back_wrapper.dart';
+import 'package:scanner_pdf_docs/utils/functions.dart';
+import 'package:scanner_pdf_docs/widgets/components/ads/hybrid_native_ad_widget.dart';
 
 class ConvertScreen extends GetView<ConvertController> {
   const ConvertScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
+    return AdOnBackWrapper(
+      child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
-        foregroundColor: AppColors.backgroundColor,
-        leading: IconButton(
-          icon:Icon(Icons.arrow_back, color: AppColors.blackColor),
-          onPressed: () => Get.back(),
+        appBar: AppBar(
+          backgroundColor: AppColors.backgroundColor,
+          foregroundColor: AppColors.backgroundColor,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: AppColors.blackColor),
+            onPressed: () => handleBackWithAd(context),
+          ),
+          title: CommonText(
+            text: 'Convert',
+            fontSize: AppFontSizes.font16,
+            fontWeight: AppFontWeights.semiBold,
+            color: AppColors.blackColor,
+          ),
         ),
-        title: CommonText(
-          text: 'Convert',
-          fontSize: AppFontSizes.font16,
-          fontWeight: AppFontWeights.semiBold,
-          color: AppColors.blackColor,
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: double.infinity,
-              color: AppColors.backgroundColor,
-              child: Padding(
-                padding: EdgeInsets.all(AppDimensions.paddingMedium),
-                child: CommonTextField(
-                  hintText: 'Search files...',
-                  fillColor: AppColors.infoBlue.withValues(alpha: 0.05),
-                  filled: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(
-                      AppDimensions.radiusSmall,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: double.infinity,
+                color: AppColors.backgroundColor,
+                child: Padding(
+                  padding: EdgeInsets.all(AppDimensions.paddingMedium),
+                  child: CommonTextField(
+                    hintText: 'Search files...',
+                    fillColor: AppColors.infoBlue.withValues(alpha: 0.05),
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                        AppDimensions.radiusSmall,
+                      ),
+                      borderSide: BorderSide.none,
                     ),
-                    borderSide: BorderSide.none,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(
-                      AppDimensions.radiusSmall,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                        AppDimensions.radiusSmall,
+                      ),
+                      borderSide: BorderSide.none,
                     ),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(
-                      AppDimensions.radiusSmall,
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                        AppDimensions.radiusSmall,
+                      ),
+                      borderSide: BorderSide.none,
                     ),
-                    borderSide: BorderSide.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10.h),
+                    prefixIcon: Icon(Icons.search, color: AppColors.grey),
+                    onChanged: controller.onSearchChanged,
                   ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10.h),
-                  prefixIcon: Icon(Icons.search, color: AppColors.grey),
-                  onChanged: controller.onSearchChanged,
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal:AppDimensions.paddingMedium),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CommonText(
-                    text: AppTexts.recentS,
-                    fontSize: AppFontSizes.font14,
-                    fontWeight: AppFontWeights.bold,
-                    color: AppColors.blackColor,
-                  ),
-                  Spacing.height(AppDimensions.spacingXLarge),
-                  Obx(() {
-                    final filteredFiles = controller.getFilteredFiles();
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppDimensions.paddingMedium),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommonText(
+                      text: AppTexts.recentS,
+                      fontSize: AppFontSizes.font14,
+                      fontWeight: AppFontWeights.bold,
+                      color: AppColors.blackColor,
+                    ),
+                    Spacing.height(AppDimensions.spacingXLarge),
+                    Obx(() {
+                      final filteredFiles = controller.getFilteredFiles();
 
-                    if (filteredFiles.isEmpty) {
-                      return Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(AppDimensions.paddingXLarge),
-                          child: CommonText(
-                            text: controller.searchQuery.value.isEmpty ? 'No files found' : 'No matching files',
-                            color: AppColors.grey,
-                            fontSize: AppFontSizes.font14,
+                      if (filteredFiles.isEmpty) {
+                        return Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(AppDimensions.paddingXLarge),
+                            child: CommonText(
+                              text: controller.searchQuery.value.isEmpty 
+                                  ? 'No files found' 
+                                  : 'No matching files',
+                              color: AppColors.grey,
+                              fontSize: AppFontSizes.font14,
+                            ),
                           ),
-                        ),
+                        );
+                      }
+
+                      return RecentDocumentItemListView(
+                        images: filteredFiles,
+                        titleBuilder: (index) {
+                          return 'File ${index + 1}';
+                        },
+                        sizeBuilder: (image) {
+                          return AppConstants.getFileSize(image);
+                        },
+                        onTap: (image) {
+                          return () async {
+                            print("cc");
+                            
+                            // Show interstitial ad before showing dialog
+                            await showManagedInterstitialAd(context);
+                            
+                            // Show conversion dialog after ad
+                            if (context.mounted) {
+                              controller.showConversionDialog(context);
+                            }
+                            
+                            print("image");
+                          };
+                        },
+                        onLongPress: (context, image, title) {},
                       );
-                    }
-
-                    return RecentDocumentItemListView(
-                      images: filteredFiles,
-                      titleBuilder: (index) {
-                        return 'File ${index + 1}';
-                      },
-                      sizeBuilder: (image) {
-                        return AppConstants.getFileSize(image);
-                      },
-                      onTap: (image) {
-                        print("cc");
-
-                        controller.showConversionDialog(context);
-                        return () {
-                          print("image");
-                        };
-                      },
-                      onLongPress: (context, image, title) {},
-                    );
-                  }),
-                ],
+                    }),
+                    Spacing.height(AppDimensions.spacingMedium),
+                  ],
+                ),
               ),
-            ),
-          ],
+              // Add bottom padding to account for the ad banner
+              SizedBox(height: 160.h),
+            ],
+          ),
+        ),
+        bottomNavigationBar: HybridNativeAdWidget(
+          height: 60,
+          smallHeight: 80,
+          adKey: 'convert_screen_bottom_ad',
+          margin: EdgeInsets.zero,
+          padding: EdgeInsets.zero,
         ),
       ),
     );

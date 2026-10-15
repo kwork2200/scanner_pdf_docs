@@ -16,6 +16,7 @@ import 'package:scanner_pdf_docs/utils/app_constants.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_app_bar.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text_field.dart';
+import 'package:scanner_pdf_docs/utils/functions.dart';
 
 class HomeTab extends GetView<ScanController> {
   const HomeTab({super.key});
@@ -77,7 +78,8 @@ class HomeTab extends GetView<ScanController> {
                   icon: Icons.credit_card,
                   label: 'ID Cards',
                   color: AppColors.infoBlue,
-                  onTap: () {
+                  onTap: () async {
+                    await showManagedInterstitialAd(context);
                     Get.toNamed(AppRoutes.idCardScanner);
                   },
                 ),
@@ -85,7 +87,8 @@ class HomeTab extends GetView<ScanController> {
                   icon: Icons.qr_code_scanner,
                   label: 'Scan\nQR Code',
                   color: AppColors.infoBlue,
-                  onTap: () {
+                  onTap: () async {
+                    await showManagedInterstitialAd(context);
                     Get.toNamed(AppRoutes.qrScanner);
                   },
                 ),
@@ -93,7 +96,8 @@ class HomeTab extends GetView<ScanController> {
                   icon: Icons.photo_library,
                   label: 'Import\nImages',
                   color: AppColors.infoBlue,
-                  onTap: () {
+                  onTap: () async {
+                    await showManagedInterstitialAd(context);
                     AppConstants.pickImages(
                       onImagesSelected: (imagePaths) async {
                         for (final path in imagePaths) {
@@ -108,7 +112,8 @@ class HomeTab extends GetView<ScanController> {
                   icon: Icons.draw,
                   label: 'Signature',
                   color: AppColors.infoBlue,
-                  onTap: () {
+                  onTap: () async {
+                    await showManagedInterstitialAd(context);
                     Get.toNamed(AppRoutes.signature);
                   },
                 ),
@@ -116,7 +121,8 @@ class HomeTab extends GetView<ScanController> {
                   icon: Icons.folder_open,
                   label: 'Import\nFiles',
                   color: AppColors.infoBlue,
-                  onTap: () {
+                  onTap: () async {
+                    await showManagedInterstitialAd(context);
                     AppConstants.pickFiles(
                       onFilesSelected: (filePaths) async {
                         // Handle selected files here
@@ -132,7 +138,8 @@ class HomeTab extends GetView<ScanController> {
                   icon: Icons.calculate,
                   label: 'Count\nObjects',
                   color: AppColors.infoBlue,
-                  onTap: () {
+                  onTap: () async {
+                    await showManagedInterstitialAd(context);
                     Get.toNamed(AppRoutes.countObjects);
                   },
                 ),
@@ -175,12 +182,16 @@ class HomeTab extends GetView<ScanController> {
                         return AppConstants.getFileSize(image);
                       },
                       onTap: (image) {
-                        controller.currentImage.value = image;
-                        Get.toNamed(
-                          AppRoutes.documentEditor,
-                          arguments: {'selectedImage': image},
-                        );
-                        return () {
+                        return () async {
+                          // Show ad before opening document editor
+                          await showManagedInterstitialAd(context);
+                          
+                          controller.currentImage.value = image;
+                          Get.toNamed(
+                            AppRoutes.documentEditor,
+                            arguments: {'selectedImage': image},
+                          );
+                          
                           print("2222");
                         };
                       },

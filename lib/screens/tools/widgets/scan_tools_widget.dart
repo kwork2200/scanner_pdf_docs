@@ -9,6 +9,8 @@ import 'package:scanner_pdf_docs/utils/app_font_sizes.dart';
 import 'package:scanner_pdf_docs/utils/app_font_weights.dart';
 import 'package:scanner_pdf_docs/utils/spacing_widget.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text.dart';
+import 'package:scanner_pdf_docs/widgets/components/ads/hybrid_native_ad_widget.dart';
+import 'package:scanner_pdf_docs/utils/functions.dart';
 
 class ScanToolsWidget extends GetView<ToolsController> {
   const ScanToolsWidget({super.key});
@@ -17,24 +19,62 @@ class ScanToolsWidget extends GetView<ToolsController> {
   Widget build(BuildContext context) {
     return ListView.builder(
       padding: EdgeInsets.all(AppDimensions.paddingSmall),
-      itemCount: controller.scanTools.length,
+      itemCount: _getItemCount(),
       itemBuilder: (context, index) {
-        final tool = controller.scanTools[index];
-        return Column(
-          children: [
-            _buildToolItem(tool),
-            if (index < controller.scanTools.length - 1)
-              Spacing.height(AppDimensions.spacingMedium),
-          ],
-        );
+        return _buildItem(index);
       },
     );
   }
 
+  int _getItemCount() {
+    int toolCount = controller.scanTools.length;
+    int adCount = toolCount ~/ 2;
+    return toolCount + adCount;
+  }
+
+  Widget _buildItem(int index) {
+    int adsBefore = index ~/ 3;
+    int toolIndex = index - adsBefore;
+    bool isAdPosition = (index + 1) % 3 == 0;
+
+    if (isAdPosition && toolIndex < controller.scanTools.length) {
+      return Column(
+        children: [
+          HybridNativeAdWidget(
+            height: 80,
+            smallHeight: 80,
+            adKey: 'scan_tools_ad_${adsBefore + 1}',
+            margin: EdgeInsets.symmetric(vertical: AppDimensions.spacingSmall),
+          ),
+          Spacing.height(AppDimensions.spacingMedium),
+        ],
+      );
+    }
+
+    // Show tool item
+    if (toolIndex < controller.scanTools.length) {
+      final tool = controller.scanTools[toolIndex];
+      return Column(
+        children: [
+          _buildToolItem(tool),
+          if (index < _getItemCount() - 1)
+            Spacing.height(AppDimensions.spacingMedium),
+        ],
+      );
+    }
+
+    return const SizedBox.shrink();
+  }
+
   Widget _buildToolItem(ToolModel tool) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         if (tool.route != null) {
+          // Show interstitial ad before navigation
+          final context = Get.context;
+          if (context != null) {
+            await showManagedInterstitialAd(context);
+          }
           Get.toNamed(tool.route!);
         }
       },

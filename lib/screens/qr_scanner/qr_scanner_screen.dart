@@ -9,24 +9,26 @@ import 'package:scanner_pdf_docs/utils/app_font_sizes.dart';
 import 'package:scanner_pdf_docs/utils/app_font_weights.dart';
 import 'package:scanner_pdf_docs/utils/app_texts.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text.dart';
+import 'package:scanner_pdf_docs/widgets/common/ad_on_back_wrapper.dart';
 
 class QrScannerScreen extends GetView<QrScannerController> {
   const QrScannerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.blackColor,
-      appBar: AppBar(
+    return AdOnBackWrapper(
+      child: Scaffold(
         backgroundColor: AppColors.blackColor,
-        leading: IconButton(
-          icon: Icon(
-            Icons.close,
-            color: AppColors.whiteColor,
-            size: 28.sp,
+        appBar: AppBar(
+          backgroundColor: AppColors.blackColor,
+          leading: IconButton(
+            icon: Icon(
+              Icons.close,
+              color: AppColors.whiteColor,
+              size: 28.sp,
+            ),
+            onPressed: () => handleBackWithAd(context),
           ),
-          onPressed: () => Get.back(),
-        ),
         title: CommonText(
           text: AppTexts.scanQrCode,
           fontSize: AppFontSizes.font18,
@@ -152,6 +154,7 @@ class QrScannerScreen extends GetView<QrScannerController> {
                   ),
                 )),
         ],
+      ),
       ),
     );
   }

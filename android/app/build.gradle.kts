@@ -63,3 +63,7 @@ android {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    implementation("com.facebook.android:audience-network-sdk:6.17.0")
+}

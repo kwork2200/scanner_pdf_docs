@@ -14,41 +14,44 @@ import 'package:scanner_pdf_docs/utils/app_texts.dart';
 import 'package:scanner_pdf_docs/utils/spacing_widget.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_app_bar.dart';
 import 'package:scanner_pdf_docs/widgets/common/common_text.dart';
+import 'package:scanner_pdf_docs/widgets/common/ad_on_back_wrapper.dart';
 
 class ToolsScreen extends GetView<ToolsController> {
   const ToolsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.infoBlue.withValues(alpha: 0.01),
-      appBar: CommonAppBar(
-        title: AppTexts.tools,
-        backgroundColor: AppColors.whiteColor,
-        showProBadge: true,
-      ),
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            color: AppColors.backgroundColor,
-            child: Container(
-              margin: EdgeInsets.all(AppDimensions.paddingMedium - 4.w),
-              decoration: BoxDecoration(
-                color: AppColors.grey200,
-                borderRadius: BorderRadius.circular(AppDimensions.radiusXLarge),
+    return AdOnBackWrapper(
+      child: Scaffold(
+        backgroundColor: AppColors.infoBlue.withValues(alpha: 0.01),
+        appBar: CommonAppBar(
+          title: AppTexts.tools,
+          backgroundColor: AppColors.whiteColor,
+          showProBadge: true,
+        ),
+        body: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              color: AppColors.backgroundColor,
+              child: Container(
+                margin: EdgeInsets.all(AppDimensions.paddingMedium - 4.w),
+                decoration: BoxDecoration(
+                  color: AppColors.grey200,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusXLarge),
+                ),
+                child: Obx(() => Row(
+                  children: [
+                    _buildTab('Scan', 0),
+                    _buildTab('Edit', 1),
+                    _buildTab('Convert', 2),
+                  ],
+                )),
               ),
-              child: Obx(() => Row(
-                children: [
-                  _buildTab('Scan', 0),
-                  _buildTab('Edit', 1),
-                  _buildTab('Convert', 2),
-                ],
-              )),
             ),
-          ),
-          Expanded(child: Obx(() => _buildContent())),
-        ],
+            Expanded(child: Obx(() => _buildContent())),
+          ],
+        ),
       ),
     );
   }
