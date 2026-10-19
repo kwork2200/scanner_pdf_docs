@@ -22,14 +22,6 @@ class GalleryController extends GetxController {
     try {
       isLoading.value = true;
       
-      // Request storage permission
-      final storagePermission = await Permission.storage.request();
-      if (!storagePermission.isGranted) {
-        Get.snackbar('Permission', 'Storage permission is required');
-        return;
-      }
-
-      // Get app's document directory
       final appDir = await getApplicationDocumentsDirectory();
       final files = appDir.listSync();
       

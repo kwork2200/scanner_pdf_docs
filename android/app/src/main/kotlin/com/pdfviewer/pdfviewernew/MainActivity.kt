@@ -2,7 +2,6 @@ package com.pdfviewer.pdfviewernew
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.plugins.googlemobileads.GoogleMobileAdsPlugin
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.StandardMessageCodec
 import io.flutter.plugin.platform.PlatformView
@@ -28,6 +27,9 @@ import com.facebook.ads.InterstitialAdListener
 import com.facebook.ads.AdListener
 import com.facebook.ads.NativeAdListener
 import com.facebook.ads.AdSize as FbAdSize
+
+// Google Mobile Ads Plugin - Fix import
+import io.flutter.plugins.googlemobileads.GoogleMobileAdsPlugin
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "com.pdfviewer.pdfviewernew/facebook_ads"

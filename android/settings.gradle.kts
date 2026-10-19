@@ -23,4 +23,19 @@ plugins {
     id("org.jetbrains.kotlin.android") version "2.2.20" apply false
 }
 
+// Include the google_mobile_ads plugin to access NativeAdFactory API
+val flutterProjectRoot = rootProject.projectDir.parentFile.toPath()
+val plugins = java.util.Properties()
+val pluginsFile = flutterProjectRoot.resolve(".flutter-plugins").toFile()
+if (pluginsFile.exists()) {
+    pluginsFile.inputStream().use { plugins.load(it) }
+    plugins.forEach { (name, path) ->
+        val pluginDirectory = flutterProjectRoot.resolve(path.toString()).resolve("android").toFile()
+        if (pluginDirectory.exists()) {
+            include(":$name")
+            project(":$name").projectDir = pluginDirectory
+        }
+    }
+}
+
 include(":app")

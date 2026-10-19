@@ -194,29 +194,12 @@ class ScanController extends GetxController {
     }
 
     try {
-      if (Platform.isAndroid) {
-        final androidVersion = await _getAndroidVersion();
-        if (androidVersion < 33) {
-          final storagePermission = await Permission.storage.request();
-          if (!storagePermission.isGranted) {
-            Get.snackbar('Permission', 'Storage permission is required');
-            return;
-          }
-        }
-      }
-
+      // gal package handles permissions internally via MediaStore API
+      // No storage permissions needed on Android 13+
       await Gal.putImage(currentImage.value!.path);
       Get.snackbar('Success', 'Image saved to gallery');
     } catch (e) {
       Get.snackbar('Error', 'Failed to save to gallery: $e');
-    }
-  }
-
-  Future<int> _getAndroidVersion() async {
-    try {
-      return 33;
-    } catch (e) {
-      return 30;
     }
   }
 
