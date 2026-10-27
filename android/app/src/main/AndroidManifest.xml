@@ -12,7 +12,8 @@
         android:label="PDF Viewer"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:largeHeap="true">
+        android:largeHeap="true"
+        android:extractNativeLibs="true">
         <property android:name="android.app.property.SUPPORTS_16KB_PAGE_SIZE" android:value="true" />
 
         <!-- Google Mobile Ads App ID -->
